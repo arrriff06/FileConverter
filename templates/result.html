@@ -3,12 +3,13 @@
 
 <head>
 <title>Conversion Result</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
 
 <body>
 
-<div class="container result-container">
-
+<div class="result-wrapper">
+<div class="result-container">
 <!-- Success Badge -->
 <div class="success-badge">✔ Conversion Successful</div>
 
@@ -62,6 +63,7 @@ Preview not available for this file type.
 </div>
 
 </div>
+</div>
 
 <!-- SUCCESS POPUP -->
 <div id="successPopup" class="popup">
@@ -72,8 +74,7 @@ Preview not available for this file type.
     </div>
 </div>
 
-<script src="{{ url_for('static', filename='script.js') }}"></script>
-
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 <script>
 // Show popup after page load
 window.onload = function(){
