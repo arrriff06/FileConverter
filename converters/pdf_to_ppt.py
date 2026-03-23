@@ -5,14 +5,23 @@ import time
 
 def convert_pdf_to_ppt(pdf_path, output_folder):
 
+    if not os.path.exists(pdf_path):
+        raise Exception("PDF file not found")
+
+    os.makedirs(output_folder, exist_ok=True)
+
     doc = fitz.open(pdf_path)
     prs = Presentation()
 
-    for page in doc:
+    temp_images = []
+
+    for i, page in enumerate(doc):
 
         pix = page.get_pixmap()
-        img_path = "temp_page.png"
+        img_path = os.path.join(output_folder, f"temp_{i}_{int(time.time())}.png")
+
         pix.save(img_path)
+        temp_images.append(img_path)
 
         slide = prs.slides.add_slide(prs.slide_layouts[6])
 
@@ -29,5 +38,7 @@ def convert_pdf_to_ppt(pdf_path, output_folder):
     )
 
     prs.save(output_file)
+
+    doc.close()
 
     return output_file
