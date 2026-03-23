@@ -22,7 +22,7 @@ def allowed_file(filename):
 
 
 # ---------- Home ----------
-@convert_bp.route("/")
+@convert_bp.route("/convert")
 def home():
     return render_template("index.html")
 
