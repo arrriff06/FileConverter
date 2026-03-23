@@ -1,10 +1,39 @@
+@media (max-width: 768px){
+
+    body{
+        padding-top:80px;
+    }
+
+    .container,
+    .result-container{
+        width:100%;
+        padding:20px;
+    }
+
+    .preview-container iframe{
+        height:250px;
+    }
+
+    .title{
+        font-size:26px;
+    }
+
+    button{
+        width:100%;
+    }
+}
+html {
+    scroll-behavior: smooth;
+}
+}
+
 /* ---------- Global Reset ---------- */
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:"Segoe UI",Roboto,Arial,sans-serif;
-transition:all .3s ease;
+transition: none;
 }
 
 /* ---------- Background + Layout ---------- */
@@ -320,4 +349,44 @@ transform:translateY(0);
 .container{
 padding:25px;
 }
+}
+/* ===== RESULT PAGE CENTER FIX ===== */
+
+.result-wrapper{
+    min-height: calc(100vh - 100px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
+}
+
+.result-container{
+    width:600px;
+    max-width:95%;
+}
+
+/* Fix preview overflow */
+.preview-container{
+    overflow:hidden;
+}
+
+/* Better image fit */
+.preview-container img{
+    max-width:100%;
+    max-height:350px;
+    object-fit:contain;
+}
+
+/* Better iframe */
+.preview-container iframe{
+    width:100%;
+    height:400px;
+}
+
+/* Button alignment */
+.result-actions{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
 }

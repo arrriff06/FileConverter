@@ -11,13 +11,13 @@ def convert_word_to_pdf(doc_path, output_folder):
 
         os.makedirs(output_folder, exist_ok=True)
 
-        # Run LibreOffice conversion
+        # ✅ FIX: use full path for LibreOffice
         subprocess.run([
-            "soffice",
+            "/usr/bin/soffice",
             "--headless",
             "--convert-to", "pdf",
-            doc_path,
-            "--outdir", output_folder
+            "--outdir", output_folder,
+            doc_path
         ], check=True)
 
         base_name = os.path.splitext(os.path.basename(doc_path))[0]
