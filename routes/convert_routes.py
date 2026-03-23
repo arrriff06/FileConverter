@@ -30,7 +30,7 @@ def home():
 
 
 # ---------- Convert ----------
-@convert_bp.route("/convert", methods=["POST"])
+@convert_bp.route("/", methods=["POST"])
 def convert_file():
 
     conversion = request.form.get("conversion")
