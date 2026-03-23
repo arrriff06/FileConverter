@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Converter</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+    <div class="nav-container">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <span>FileConverter</span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+    </div>
+</header>
+
+
+<!-- ================= MAIN SECTION ================= -->
+<main class="main-content">
+
+<div class="container">
+
+    <h1 class="title">Universal File Converter</h1>
+    <p class="subtitle">Convert your files instantly</p>
+
+    <form id="uploadForm" action="/convert" method="POST" enctype="multipart/form-data">
+
+        <!-- Upload Box -->
+        <div class="upload-box" id="dropArea">
+            <p class="upload-text">Drag & Drop Files Here</p>
+            <p class="upload-sub">or click to upload</p>
+
+            <input 
+                type="file" 
+                name="file" 
+                id="fileInput" 
+                multiple 
+                accept=".jpg,.jpeg,.png,.pdf,.ppt,.pptx,.doc,.docx"
+                hidden
+            >
+        </div>
+
+        <!-- File Preview -->
+        <div id="filePreview" class="file-preview-list"></div>
+
+        <!-- Conversion -->
+        <select name="conversion" required>
+            <option disabled selected value="">Select Conversion Type</option>
+            <option value="jpg_to_pdf">JPG → PDF</option>
+            <option value="pdf_to_jpg">PDF → JPG</option>
+            <option value="pdf_to_ppt">PDF → PPT</option>
+            <option value="ppt_to_pdf">PPT → PDF</option>
+            <option value="word_to_pdf">Word → PDF</option>
+        </select>
+
+        <!-- Buttons -->
+        <div class="action-buttons">
+            <button type="submit" id="convertBtn">Convert File</button>
+            <button type="button" id="clearAllBtn" class="clear-btn">Clear All</button>
+        </div>
+
+    </form>
+
+</div>
+
+</main>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="how-section">
+
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-subtitle">Convert your files in 3 simple steps</p>
+
+    <div class="steps-container">
+
+        <!-- Step 1 -->
+        <div class="step-card">
+            <img src="{{ url_for('static', filename='images/upload.png') }}" alt="Upload">
+            <h3>Upload File</h3>
+            <p>Select or drag & drop your file into the upload box.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+            <img src="{{ url_for('static', filename='images/convert.png') }}" alt="Convert">
+            <h3>Choose Format</h3>
+            <p>Select the conversion type like PDF, JPG, PPT, or Word.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+            <img src="{{ url_for('static', filename='images/download.png') }}" alt="Download">
+            <h3>Download</h3>
+            <p>Click the download button and get your converted file instantly.</p>
+        </div>
+
+    </div>
+
+</section>
+<footer>
+
+ <!-- ================= ABOUT ================= -->
+<section id="about" class="section-box">
+    <h2>About Us</h2>
+    <p>
+        This tool allows you to <br> convert files easily <br>between formats like<br>  PDF, JPG, PPT, and Word<br>
+        with a clean and fast interface.
+    </p>
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="section-box">
+    <h2>Contact</h2>
+    <p>
+        Developed by Arif | BCA Project <br>
+        Email: bwubca23425@brainwareuniversity.ac.in
+    </p>
+</section>
+</footer>
+
+
+<!-- ================= LOADER ================= -->
+<div id="loader" class="loader-box">
+    <div class="loader"></div>
+    <p>Converting your file...</p>
+</div>
+
+
+<!-- ================= JS ================= -->
+<script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+
+</body>
+</html>

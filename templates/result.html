@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Conversion Result</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+
+<body>
+
+<div class="container result-container">
+
+<!-- Success Badge -->
+<div class="success-badge">✔ Conversion Successful</div>
+
+<h1 class="title">Converted File</h1>
+<p class="subtitle">Preview and download your converted file</p>
+
+<!-- Preview -->
+<div class="preview-container">
+
+{% if filename.endswith('.jpg') or filename.endswith('.png') %}
+<img id="previewImage"
+src="{{ url_for('convert_bp.view_file', filename=filename) }}"
+alt="Converted File Preview">
+
+{% elif filename.endswith('.pdf') %}
+<iframe
+src="{{ url_for('convert_bp.view_file', filename=filename) }}">
+</iframe>
+
+{% else %}
+<div class="file-preview">
+📄 {{ filename }}
+<br><br>
+Preview not available for this file type.
+</div>
+{% endif %}
+
+</div>
+
+<!-- Editing tools only for images -->
+{% if filename.endswith('.jpg') or filename.endswith('.png') %}
+<div class="edit-tools">
+<button onclick="rotateImage()">Rotate</button>
+<button onclick="flipImage()">Flip</button>
+<button onclick="grayscale()">Grayscale</button>
+<button onclick="resetImage()">Reset</button>
+</div>
+{% endif %}
+
+<!-- Action Buttons -->
+<div class="result-actions">
+
+<a href="{{ url_for('convert_bp.download_file', filename=filename) }}">
+<button class="download-btn">⬇ Download</button>
+</a>
+
+<a href="/">
+<button class="back-btn">🔁 Convert Another</button>
+</a>
+
+</div>
+
+</div>
+
+<!-- SUCCESS POPUP -->
+<div id="successPopup" class="popup">
+    <div class="popup-box">
+        <h2>✅ Conversion Completed</h2>
+        <p>Your file is ready to download</p>
+        <button onclick="closePopup()">OK</button>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+<script>
+// Show popup after page load
+window.onload = function(){
+    setTimeout(()=>{
+        document.getElementById("successPopup").style.display = "flex";
+    }, 500);
+}
+
+function closePopup(){
+    document.getElementById("successPopup").style.display = "none";
+}
+</script>
+
+</body>
+
+</html>
