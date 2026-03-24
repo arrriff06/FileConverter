@@ -8,8 +8,14 @@ def convert_ppt_to_pdf(ppt_path, output_folder):
 
         os.makedirs(output_folder, exist_ok=True)
 
+        # ✅ Correct path for Windows LibreOffice
+        soffice_path = r"C:\Program Files\LibreOffice\program\soffice.exe"
+
+        if not os.path.exists(soffice_path):
+            raise Exception("LibreOffice not found. Please install it.")
+
         subprocess.run([
-            "/usr/bin/soffice",   # ✅ FIXED PATH
+            soffice_path,
             "--headless",
             "--convert-to", "pdf",
             ppt_path,

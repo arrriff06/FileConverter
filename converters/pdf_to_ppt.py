@@ -1,44 +1,51 @@
+import subprocess
+import os
+import shutil
 import fitz
 from pptx import Presentation
-import os
 import time
 
 def convert_pdf_to_ppt(pdf_path, output_folder):
+    try:
+        pdf_path = os.path.abspath(pdf_path)
+        output_folder = os.path.abspath(output_folder)
 
-    if not os.path.exists(pdf_path):
-        raise Exception("PDF file not found")
+        os.makedirs(output_folder, exist_ok=True)
 
-    os.makedirs(output_folder, exist_ok=True)
+        # ===== TRY LIBREOFFICE FIRST =====
+        soffice_path = shutil.which("soffice") or r"C:\Program Files\LibreOffice\program\soffice.exe"
 
-    doc = fitz.open(pdf_path)
-    prs = Presentation()
+        if os.path.exists(soffice_path):
 
-    temp_images = []
+            command = f'"{soffice_path}" --headless --convert-to pptx "{pdf_path}" --outdir "{output_folder}"'
+            result = subprocess.run(command, shell=True)
 
-    for i, page in enumerate(doc):
+            base_name = os.path.splitext(os.path.basename(pdf_path))[0]
+            output_file = os.path.join(output_folder, base_name + ".pptx")
 
-        pix = page.get_pixmap()
-        img_path = os.path.join(output_folder, f"temp_{i}_{int(time.time())}.png")
+            if result.returncode == 0 and os.path.exists(output_file):
+                return output_file
 
-        pix.save(img_path)
-        temp_images.append(img_path)
+        print("LibreOffice failed → using fallback method")
 
-        slide = prs.slides.add_slide(prs.slide_layouts[6])
+        # ===== FALLBACK: IMAGE BASED PPT =====
+        doc = fitz.open(pdf_path)
+        prs = Presentation()
 
-        slide.shapes.add_picture(
-            img_path,
-            0,
-            0,
-            width=prs.slide_width
-        )
+        for i, page in enumerate(doc):
+            pix = page.get_pixmap()
+            img_path = os.path.join(output_folder, f"temp_{i}_{int(time.time())}.png")
+            pix.save(img_path)
 
-    output_file = os.path.join(
-        output_folder,
-        f"converted_{int(time.time())}.pptx"
-    )
+            slide = prs.slides.add_slide(prs.slide_layouts[6])
+            slide.shapes.add_picture(img_path, 0, 0, width=prs.slide_width)
 
-    prs.save(output_file)
+        output_file = os.path.join(output_folder, f"converted_{int(time.time())}.pptx")
+        prs.save(output_file)
 
-    doc.close()
+        doc.close()
 
-    return output_file
+        return output_file
+
+    except Exception as e:
+        raise Exception(f"PDF to PPT conversion failed: {str(e)}")

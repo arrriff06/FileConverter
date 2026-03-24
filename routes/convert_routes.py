@@ -8,7 +8,7 @@ from converters.pdf_to_ppt import convert_pdf_to_ppt
 from converters.ppt_to_pdf import convert_ppt_to_pdf
 from converters.word_to_pdf import convert_word_to_pdf
 
-# ✅ CREATE FIRST
+# ---------- CREATE BLUEPRINT ----------
 convert_bp = Blueprint("convert_bp", __name__)
 
 
@@ -41,6 +41,7 @@ def convert_file():
     saved_paths = []
     files = request.files.getlist("file")
 
+    # Save uploaded files
     for file in files:
         if file and file.filename != "" and allowed_file(file.filename):
             path = save_file(file, upload_folder)
@@ -51,11 +52,17 @@ def convert_file():
 
     try:
 
+        # ---------- JPG → PDF ----------
         if conversion == "jpg_to_pdf":
             output_path = convert_jpg_to_pdf(saved_paths, output_folder)
             filename = os.path.basename(output_path)
 
+            return render_template("result.html", filename=filename)
+
+
+        # ---------- PDF → JPG ----------
         elif conversion == "pdf_to_jpg":
+
             output_files = convert_pdf_to_jpg(saved_paths[0], output_folder)
 
             import zipfile
@@ -64,23 +71,44 @@ def convert_file():
             zip_name = f"converted_{int(time.time())}.zip"
             zip_path = os.path.join(output_folder, zip_name)
 
+            # Create ZIP
             with zipfile.ZipFile(zip_path, 'w') as zipf:
                 for file in output_files:
                     zipf.write(file, os.path.basename(file))
 
-            filename = zip_name
+            # Extract only filenames for preview
+            output_files = [os.path.basename(f) for f in output_files]
 
+            return render_template(
+                "result.html",
+                files=output_files,   # for gallery preview
+                filename=zip_name     # for download button
+            )
+
+
+        # ---------- PDF → PPT ----------
         elif conversion == "pdf_to_ppt":
             output_path = convert_pdf_to_ppt(saved_paths[0], output_folder)
             filename = os.path.basename(output_path)
 
+            return render_template("result.html", filename=filename)
+
+
+        # ---------- PPT → PDF ----------
         elif conversion == "ppt_to_pdf":
             output_path = convert_ppt_to_pdf(saved_paths[0], output_folder)
             filename = os.path.basename(output_path)
 
+            return render_template("result.html", filename=filename)
+
+
+        # ---------- WORD → PDF ----------
         elif conversion == "word_to_pdf":
             output_path = convert_word_to_pdf(saved_paths[0], output_folder)
             filename = os.path.basename(output_path)
+
+            return render_template("result.html", filename=filename)
+
 
         else:
             return "Conversion not supported"
@@ -88,8 +116,6 @@ def convert_file():
     except Exception as e:
         print("ERROR:", e)
         return f"Conversion failed: {str(e)}"
-
-    return render_template("result.html", filename=filename)
 
 
 # ---------- Download ----------

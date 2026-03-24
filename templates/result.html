@@ -1,66 +1,92 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 
 <head>
 <title>Conversion Result</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet"/>
 </head>
 
 <body>
 
 <div class="result-wrapper">
-<div class="result-container">
-<!-- Success Badge -->
-<div class="success-badge">✔ Conversion Successful</div>
+<div class="result-card">
 
-<h1 class="title">Converted File</h1>
-<p class="subtitle">Preview and download your converted file</p>
+    <!-- Success -->
+    <div class="success-badge">✔ Conversion Successful</div>
 
-<!-- Preview -->
-<div class="preview-container">
+    <h1 class="title">Your File is Ready</h1>
+    <p class="subtitle">Preview, edit, and download your file</p>
 
-{% if filename.endswith('.jpg') or filename.endswith('.png') %}
-<img id="previewImage"
-src="{{ url_for('convert_bp.view_file', filename=filename) }}"
-alt="Converted File Preview">
+    <!-- Preview -->
+    <div class="preview-container">
 
-{% elif filename.endswith('.pdf') %}
-<iframe
-src="{{ url_for('convert_bp.view_file', filename=filename) }}">
-</iframe>
+    {% if files %}
 
-{% else %}
-<div class="file-preview">
-📄 {{ filename }}
-<br><br>
-Preview not available for this file type.
+        {% for file in files %}
+            <img 
+            src="{{ url_for('convert_bp.view_file', filename=file) }}"
+            class="preview-gallery"
+            onclick="selectImage(this)">
+        {% endfor %}
+
+    {% elif filename.endswith('.jpg') or filename.endswith('.png') %}
+
+        <img id="previewImage"
+        src="{{ url_for('convert_bp.view_file', filename=filename) }}"
+        onclick="selectImage(this)">
+
+    {% elif filename.endswith('.pdf') %}
+
+        <iframe src="{{ url_for('convert_bp.view_file', filename=filename) }}"></iframe>
+
+    {% elif filename.endswith('.ppt') or filename.endswith('.pptx') %}
+
+        <div class="file-preview">
+            📊 PowerPoint file generated <br><br>
+            Click download to view slides
+        </div>
+
+    {% elif filename.endswith('.zip') %}
+
+        <div class="file-preview">
+            📦 Multiple images generated <br><br>
+            Click download to get all pages
+        </div>
+
+    {% else %}
+
+        <div class="file-preview">
+            📄 {{ filename }}<br><br>
+            Preview not available
+        </div>
+
+    {% endif %}
+
+    </div>
+
+    <!-- EDIT TOOLS (WORKS FOR CLICKED IMAGE) -->
+    <div class="edit-tools" id="editSection">
+    <button onclick="rotateImage()">Rotate</button>
+    <button onclick="flipImage()">Flip</button>
+    <button onclick="startCrop()">Crop</button>
+    <button onclick="applyCrop()">Apply</button>
+    <button onclick="resetImage()">Reset</button>
 </div>
-{% endif %}
 
-</div>
+    <!-- ACTIONS -->
+    <div class="result-actions">
 
-<!-- Editing tools only for images -->
-{% if filename.endswith('.jpg') or filename.endswith('.png') %}
-<div class="edit-tools">
-<button onclick="rotateImage()">Rotate</button>
-<button onclick="flipImage()">Flip</button>
-<button onclick="grayscale()">Grayscale</button>
-<button onclick="resetImage()">Reset</button>
-</div>
-{% endif %}
+        <a href="{{ url_for('convert_bp.download_file', filename=filename) }}">
+            <button class="download-btn">⬇ Download</button>
+        </a>
 
-<!-- Action Buttons -->
-<div class="result-actions">
+        <a href="/">
+            <button class="back-btn">🔁 Convert Another</button>
+        </a>
 
-<a href="{{ url_for('convert_bp.download_file', filename=filename) }}">
-<button class="download-btn">⬇ Download</button>
-</a>
-
-<a href="/">
-<button class="back-btn">🔁 Convert Another</button>
-</a>
-
-</div>
+    </div>
 
 </div>
 </div>
@@ -75,8 +101,8 @@ Preview not available for this file type.
 </div>
 
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 <script>
-// Show popup after page load
 window.onload = function(){
     setTimeout(()=>{
         document.getElementById("successPopup").style.display = "flex";
@@ -87,7 +113,6 @@ function closePopup(){
     document.getElementById("successPopup").style.display = "none";
 }
 </script>
-
+<script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
 </body>
-
 </html>

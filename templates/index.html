@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>File Converter</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
@@ -56,14 +56,46 @@
         <div id="filePreview" class="file-preview-list"></div>
 
         <!-- Conversion -->
-        <select name="conversion" required>
-            <option disabled selected value="">Select Conversion Type</option>
-            <option value="jpg_to_pdf">JPG → PDF</option>
-            <option value="pdf_to_jpg">PDF → JPG</option>
-            <option value="pdf_to_ppt">PDF → PPT</option>
-            <option value="ppt_to_pdf">PPT → PDF</option>
-            <option value="word_to_pdf">Word → PDF</option>
-        </select>
+        <div class="custom-select" id="customSelect">
+
+    <div class="select-box">
+        <span class="selected">Select Conversion Type</span>
+        <span class="arrow">&#9662;</span>
+    </div>
+
+    <div class="options-container">
+
+        <div class="option" data-value="jpg_to_pdf">
+            <img src="/static/images/jpg.png">
+            JPG → PDF
+        </div>
+
+        <div class="option" data-value="pdf_to_jpg">
+            <img src="/static/images/pdf.png">
+            PDF → JPG
+        </div>
+
+        <div class="option" data-value="pdf_to_ppt">
+            <img src="/static/images/pdf.png">
+            PDF → PPT
+        </div>
+
+        <div class="option" data-value="ppt_to_pdf">
+            <img src="/static/images/ppt.png">
+            PPT → PDF
+        </div>
+
+        <div class="option" data-value="word_to_pdf">
+            <img src="/static/images/word.png">
+            Word → PDF
+        </div>
+
+    </div>
+
+    <!-- Hidden input for backend -->
+    <input type="hidden" name="conversion" id="conversionInput" required>
+
+</div>
 
         <!-- Buttons -->
         <div class="action-buttons">
