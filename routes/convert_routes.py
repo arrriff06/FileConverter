@@ -130,3 +130,6 @@ def download_file(filename):
 def view_file(filename):
     output_folder = current_app.config["OUTPUT_FOLDER"]
     return send_from_directory(output_folder, filename)
+@convert_bp.route("/contact")
+def contact():
+    return render_template("contact.html")
