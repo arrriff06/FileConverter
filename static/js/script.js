@@ -284,15 +284,56 @@ window.startCrop = function(){
     });
 };
 
-// Apply crop
-window.applyCrop = function(){
-    if (!cropper) return;
+let cropMode = false;
+let startX, startY, endX, endY;
 
-    const canvas = cropper.getCroppedCanvas();
+function startCrop() {
+    if (!currentImage) return;
 
-    // Replace image with cropped version
-    currentImage.src = canvas.toDataURL("image/png");
+    cropMode = true;
+    alert("Drag on image to crop");
 
-    cropper.destroy();
-    cropper = null;
-};
+    currentImage.style.cursor = "crosshair";
+
+    currentImage.onmousedown = function(e) {
+        startX = e.offsetX;
+        startY = e.offsetY;
+    };
+
+    currentImage.onmouseup = function(e) {
+        endX = e.offsetX;
+        endY = e.offsetY;
+
+        document.getElementById("cropSection").style.display = "flex";
+    };
+}
+
+function applyCrop() {
+    if (!currentImage) return;
+
+    const canvas = document.getElementById("cropCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const img = new Image();
+    img.src = currentImage.src;
+
+    img.onload = function() {
+
+        const width = endX - startX;
+        const height = endY - startY;
+
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.drawImage(
+            img,
+            startX, startY, width, height,
+            0, 0, width, height
+        );
+
+        currentImage.src = canvas.toDataURL("image/png");
+
+        cropMode = false;
+        currentImage.style.cursor = "default";
+    };
+}

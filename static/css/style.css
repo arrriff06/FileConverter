@@ -581,3 +581,17 @@ footer{
 .preview-gallery:hover{
     transform:scale(1.05);
 }
+.crop-tools {
+    display: none;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.crop-tools button {
+    padding: 10px 15px;
+    border: none;
+    background: #6c5ce7;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
