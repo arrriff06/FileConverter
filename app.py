@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 from routes.convert_routes import convert_bp
 from config import UPLOAD_FOLDER, OUTPUT_FOLDER

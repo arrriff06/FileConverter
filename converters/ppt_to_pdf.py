@@ -1,39 +1,75 @@
-import subprocess
+import requests
 import os
-import shutil
+import time
+from config import CLOUDCONVERT_API_KEY
+if not CLOUDCONVERT_API_KEY:
+    raise Exception("CloudConvert API key not set")
 
-print("LIBREOFFICE PATH:", shutil.which("soffice"))
-
-def convert_ppt_to_pdf(ppt_path, output_folder):
+def convert_ppt_to_pdf(input_path, output_folder):
     try:
-        ppt_path = os.path.abspath(ppt_path)
-        output_folder = os.path.abspath(output_folder)
+        url = "https://api.cloudconvert.com/v2/jobs"
 
+        payload = {
+            "tasks": {
+                "import-file": {
+                    "operation": "import/upload"
+                },
+                "convert-file": {
+                    "operation": "convert",
+                    "input": "import-file",
+                    "output_format": "pdf"
+                },
+                "export-file": {
+                    "operation": "export/url",
+                    "input": "convert-file"
+                }
+            }
+        }
+
+        headers = {
+            "Authorization": f"Bearer {CLOUDCONVERT_API_KEY}"
+        }
+
+        # Create job
+        response = requests.post(url, json=payload, headers=headers)
+        job = response.json()["data"]
+
+        # Upload file
+        upload_task = next(t for t in job["tasks"] if t["name"] == "import-file")
+        upload_url = upload_task["result"]["form"]["url"]
+        upload_params = upload_task["result"]["form"]["parameters"]
+
+        with open(input_path, "rb") as f:
+            files = {"file": f}
+            requests.post(upload_url, data=upload_params, files=files)
+
+        # Wait for conversion
+        job_id = job["id"]
+
+        while True:
+            time.sleep(2)
+            status_res = requests.get(f"{url}/{job_id}", headers=headers)
+            status_data = status_res.json()["data"]
+
+            if status_data["status"] == "finished":
+                break
+            elif status_data["status"] == "error":
+                raise Exception("CloudConvert failed")
+
+        # Get download URL
+        export_task = next(t for t in status_data["tasks"] if t["name"] == "export-file")
+        file_url = export_task["result"]["files"][0]["url"]
+
+        # Download file
         os.makedirs(output_folder, exist_ok=True)
+        output_filename = f"converted_{int(time.time())}.pdf"
+        output_path = os.path.join(output_folder, output_filename)
 
-        # Auto-detect LibreOffice
-        soffice_path = shutil.which("soffice") or r"C:\Program Files\LibreOffice\program\soffice.exe"
+        r = requests.get(file_url)
+        with open(output_path, "wb") as f:
+            f.write(r.content)
 
-        if not os.path.exists(soffice_path):
-            raise Exception("LibreOffice not found")
-
-        command = [
-            soffice_path,
-            "--headless",
-            "--convert-to", "pdf",
-            ppt_path,
-            "--outdir", output_folder
-        ]
-
-        result = subprocess.run(command)
-
-        base_name = os.path.splitext(os.path.basename(ppt_path))[0]
-        output_file = os.path.join(output_folder, base_name + ".pdf")
-
-        if result.returncode != 0 or not os.path.exists(output_file):
-            raise Exception("Conversion failed")
-
-        return output_file
+        return output_path
 
     except Exception as e:
         raise Exception(f"PPT to PDF conversion failed: {str(e)}")

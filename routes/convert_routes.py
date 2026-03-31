@@ -3,7 +3,7 @@ import os
 import qrcode
 import time
 import zipfile
-
+from converters.cloudconvert_api import convert_to_pdf
 from utils.file_handler import save_file
 from converters.jpg_to_pdf import convert_jpg_to_pdf
 from converters.pdf_to_jpg import convert_pdf_to_jpg
@@ -110,12 +110,12 @@ def convert_file():
 
         # ---------- PPT → PDF ----------
         elif conversion == "ppt_to_pdf":
-            output_path = convert_ppt_to_pdf(saved_paths[0], output_folder)
+            output_path = convert_to_pdf(saved_paths[0], output_folder)
             filename = os.path.basename(output_path)
 
         # ---------- WORD → PDF ----------
         elif conversion == "word_to_pdf":
-            output_path = convert_word_to_pdf(saved_paths[0], output_folder)
+            output_path = convert_to_pdf(saved_paths[0], output_folder)
             filename = os.path.basename(output_path)
 
         else:
