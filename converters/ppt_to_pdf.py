@@ -2,6 +2,7 @@ import subprocess
 import os
 import shutil
 
+print("LIBREOFFICE PATH:", shutil.which("soffice"))
 
 def convert_ppt_to_pdf(ppt_path, output_folder):
     try:
