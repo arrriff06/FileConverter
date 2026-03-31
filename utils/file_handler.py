@@ -15,4 +15,4 @@ def save_file(file, upload_folder):
     file.save(file_path)
 
     # ✅ RETURN EXACTLY 2 VALUES
-    return file_path, file_id
+    return file_path
