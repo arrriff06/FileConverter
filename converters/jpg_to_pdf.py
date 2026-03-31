@@ -14,16 +14,28 @@ def convert_jpg_to_pdf(image_paths, output_folder):
     images = []
 
     for path in image_paths:
+
+        # 🔥 HANDLE TUPLE BUG (important)
+        if isinstance(path, tuple):
+            path = path[0]
+
+        if not isinstance(path, str):
+            continue
+
         if not os.path.exists(path):
             continue
 
-        img = Image.open(path)
+        try:
+            img = Image.open(path)
 
-        # Convert everything to RGB (important)
-        if img.mode != "RGB":
-            img = img.convert("RGB")
+            # Convert to RGB (required for PDF)
+            if img.mode != "RGB":
+                img = img.convert("RGB")
 
-        images.append(img)
+            images.append(img)
+
+        except Exception as e:
+            print(f"Skipping file {path}: {e}")
 
     if not images:
         raise Exception("No valid images found")
@@ -31,10 +43,18 @@ def convert_jpg_to_pdf(image_paths, output_folder):
     output_filename = f"converted_{int(time.time())}.pdf"
     output_path = os.path.join(output_folder, output_filename)
 
-    images[0].save(
-        output_path,
-        save_all=True,
-        append_images=images[1:]
-    )
+    try:
+        images[0].save(
+            output_path,
+            save_all=True,
+            append_images=images[1:]
+        )
+    finally:
+        # 🔥 CLOSE ALL IMAGES (important for stability)
+        for img in images:
+            try:
+                img.close()
+            except:
+                pass
 
     return output_path
