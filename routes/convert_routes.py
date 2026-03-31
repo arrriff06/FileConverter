@@ -31,8 +31,8 @@ def allowed_file(filename):
 
 # ---------- QR GENERATOR (CENTRALIZED) ----------
 def generate_qr(filename):
-    base_url = request.host_url
-    download_link = f"{base_url}download/{filename}"
+    base_url = request.host_url.rstrip("/")
+    download_link = f"{base_url}convert/download/{filename}"
 
     qr_folder = os.path.join("static", "qr")
     os.makedirs(qr_folder, exist_ok=True)
@@ -67,7 +67,7 @@ def convert_file():
     # ---------- Save Files ----------
     for file in files:
         if file and file.filename != "" and allowed_file(file.filename):
-            path, _ = save_file(file, upload_folder)
+            path = save_file(file, upload_folder)
             saved_paths.append(path)
 
     if not saved_paths:
@@ -162,18 +162,27 @@ def convert_file():
         print("ERROR:", e)
         return f"Conversion failed: {str(e)}"
 
-
 # ---------- Download ----------
 @convert_bp.route("/download/<filename>")
 def download_file(filename):
     output_folder = current_app.config["OUTPUT_FOLDER"]
+    file_path = os.path.join(output_folder, filename)
 
-    # Expiry check (10 min)
+    # Expiry check
     if filename in file_expiry:
         if time.time() - file_expiry[filename] > 600:
             return "Link expired", 403
 
-    return send_from_directory(output_folder, filename, as_attachment=True)
+    response = send_from_directory(output_folder, filename, as_attachment=True)
+
+    # 🔥 DELETE AFTER DOWNLOAD
+    try:
+        if os.path.exists(file_path):
+            os.remove(file_path)
+    except Exception as e:
+        print("Delete error:", e)
+
+    return response
 
 
 # ---------- View ----------
