@@ -70,11 +70,14 @@
     <div class="edit-tools" id="editSection">
     <button onclick="rotateImage()">Rotate</button>
     <button onclick="flipImage()">Flip</button>
-    <button onclick="startCrop()">Crop</button>
-    <button onclick="applyCrop()">Apply</button>
     <button onclick="resetImage()">Reset</button>
 </div>
+<div class="crop-tools" id="cropSection">
+    <button onclick="startCrop()">✂ Start Crop</button>
+    <button onclick="applyCrop()">✅ Apply Crop</button>
+</div>
 
+<canvas id="cropCanvas" style="display:none;"></canvas>
     <!-- ACTIONS -->
     <div class="result-actions">
 
@@ -87,7 +90,19 @@
         </a>
 
     </div>
+{% if qr_image %}
+<div style="margin-top:30px; text-align:center;">
 
+    <h3>📲 Send to Phone</h3>
+
+    <img src="{{ url_for('static', filename=qr_image) }}" width="200">
+
+    <p style="margin-top:10px;">
+        Scan this QR code to download your file instantly on your phone
+    </p>
+
+</div>
+{% endif %}
 </div>
 </div>
 

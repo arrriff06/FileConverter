@@ -2,6 +2,7 @@ import subprocess
 import os
 import shutil
 
+
 def convert_word_to_pdf(doc_path, output_folder):
     try:
         doc_path = os.path.abspath(doc_path)
@@ -12,20 +13,21 @@ def convert_word_to_pdf(doc_path, output_folder):
 
         os.makedirs(output_folder, exist_ok=True)
 
-        # ✅ AUTO-DETECT LibreOffice PATH
-        soffice_path = shutil.which("soffice")
-
-        # If not found, use manual path (Windows)
-        if not soffice_path:
-            soffice_path = r"C:\Program Files\LibreOffice\program\soffice.exe"
+        # Auto-detect LibreOffice
+        soffice_path = shutil.which("soffice") or r"C:\Program Files\LibreOffice\program\soffice.exe"
 
         if not os.path.exists(soffice_path):
-            raise Exception("LibreOffice not installed or path incorrect")
+            raise Exception("LibreOffice not installed")
 
-        # ✅ RUN COMMAND
-        command = f'"{soffice_path}" --headless --convert-to pdf "{doc_path}" --outdir "{output_folder}"'
+        command = [
+            soffice_path,
+            "--headless",
+            "--convert-to", "pdf",
+            doc_path,
+            "--outdir", output_folder
+        ]
 
-        result = subprocess.run(command, shell=True)
+        result = subprocess.run(command)
 
         base_name = os.path.splitext(os.path.basename(doc_path))[0]
         output_file = os.path.join(output_folder, base_name + ".pdf")

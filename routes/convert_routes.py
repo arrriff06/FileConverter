@@ -1,5 +1,8 @@
 from flask import Blueprint, render_template, request, send_from_directory, current_app
 import os
+import qrcode
+import time
+import zipfile
 
 from utils.file_handler import save_file
 from converters.jpg_to_pdf import convert_jpg_to_pdf
@@ -11,6 +14,9 @@ from converters.word_to_pdf import convert_word_to_pdf
 # ---------- CREATE BLUEPRINT ----------
 convert_bp = Blueprint("convert_bp", __name__)
 
+# ---------- FILE EXPIRY TRACK ----------
+file_expiry = {}
+
 
 # ---------- Allowed File Types ----------
 def allowed_file(filename):
@@ -21,6 +27,23 @@ def allowed_file(filename):
         "doc", "docx"
     }
     return "." in filename and filename.rsplit(".", 1)[1].lower() in allowed_extensions
+
+
+# ---------- QR GENERATOR (CENTRALIZED) ----------
+def generate_qr(filename):
+    base_url = request.host_url
+    download_link = f"{base_url}download/{filename}"
+
+    qr_folder = os.path.join("static", "qr")
+    os.makedirs(qr_folder, exist_ok=True)
+
+    qr_path = os.path.join(qr_folder, f"{filename}.png")
+    qrcode.make(download_link).save(qr_path)
+
+    # Store expiry time (10 mins)
+    file_expiry[filename] = time.time()
+
+    return f"qr/{filename}.png", download_link
 
 
 # ---------- Home ----------
@@ -41,10 +64,10 @@ def convert_file():
     saved_paths = []
     files = request.files.getlist("file")
 
-    # Save uploaded files
+    # ---------- Save Files ----------
     for file in files:
         if file and file.filename != "" and allowed_file(file.filename):
-            path = save_file(file, upload_folder)
+            path, _ = save_file(file, upload_folder)
             saved_paths.append(path)
 
     if not saved_paths:
@@ -57,58 +80,80 @@ def convert_file():
             output_path = convert_jpg_to_pdf(saved_paths, output_folder)
             filename = os.path.basename(output_path)
 
-            return render_template("result.html", filename=filename)
+            qr_image, download_link = generate_qr(filename)
 
+            return render_template(
+                "result.html",
+                filename=filename,
+                qr_image=qr_image,
+                download_link=download_link
+            )
 
         # ---------- PDF → JPG ----------
         elif conversion == "pdf_to_jpg":
 
             output_files = convert_pdf_to_jpg(saved_paths[0], output_folder)
 
-            import zipfile
-            import time
-
             zip_name = f"converted_{int(time.time())}.zip"
             zip_path = os.path.join(output_folder, zip_name)
 
-            # Create ZIP
             with zipfile.ZipFile(zip_path, 'w') as zipf:
                 for file in output_files:
                     zipf.write(file, os.path.basename(file))
 
-            # Extract only filenames for preview
             output_files = [os.path.basename(f) for f in output_files]
+
+            qr_image, download_link = generate_qr(zip_name)
 
             return render_template(
                 "result.html",
-                files=output_files,   # for gallery preview
-                filename=zip_name     # for download button
+                files=output_files,
+                filename=zip_name,
+                qr_image=qr_image,
+                download_link=download_link
             )
-
 
         # ---------- PDF → PPT ----------
         elif conversion == "pdf_to_ppt":
             output_path = convert_pdf_to_ppt(saved_paths[0], output_folder)
             filename = os.path.basename(output_path)
 
-            return render_template("result.html", filename=filename)
+            qr_image, download_link = generate_qr(filename)
 
+            return render_template(
+                "result.html",
+                filename=filename,
+                qr_image=qr_image,
+                download_link=download_link
+            )
 
         # ---------- PPT → PDF ----------
         elif conversion == "ppt_to_pdf":
             output_path = convert_ppt_to_pdf(saved_paths[0], output_folder)
             filename = os.path.basename(output_path)
 
-            return render_template("result.html", filename=filename)
+            qr_image, download_link = generate_qr(filename)
 
+            return render_template(
+                "result.html",
+                filename=filename,
+                qr_image=qr_image,
+                download_link=download_link
+            )
 
         # ---------- WORD → PDF ----------
         elif conversion == "word_to_pdf":
             output_path = convert_word_to_pdf(saved_paths[0], output_folder)
             filename = os.path.basename(output_path)
 
-            return render_template("result.html", filename=filename)
+            qr_image, download_link = generate_qr(filename)
 
+            return render_template(
+                "result.html",
+                filename=filename,
+                qr_image=qr_image,
+                download_link=download_link
+            )
 
         else:
             return "Conversion not supported"
@@ -122,6 +167,12 @@ def convert_file():
 @convert_bp.route("/download/<filename>")
 def download_file(filename):
     output_folder = current_app.config["OUTPUT_FOLDER"]
+
+    # Expiry check (10 min)
+    if filename in file_expiry:
+        if time.time() - file_expiry[filename] > 600:
+            return "Link expired", 403
+
     return send_from_directory(output_folder, filename, as_attachment=True)
 
 
@@ -130,6 +181,9 @@ def download_file(filename):
 def view_file(filename):
     output_folder = current_app.config["OUTPUT_FOLDER"]
     return send_from_directory(output_folder, filename)
+
+
+# ---------- Contact ----------
 @convert_bp.route("/contact")
 def contact():
     return render_template("contact.html")

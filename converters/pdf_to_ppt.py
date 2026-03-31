@@ -5,6 +5,7 @@ import fitz
 from pptx import Presentation
 import time
 
+
 def convert_pdf_to_ppt(pdf_path, output_folder):
     try:
         pdf_path = os.path.abspath(pdf_path)
@@ -12,13 +13,19 @@ def convert_pdf_to_ppt(pdf_path, output_folder):
 
         os.makedirs(output_folder, exist_ok=True)
 
-        # ===== TRY LIBREOFFICE FIRST =====
+        # ===== Try LibreOffice =====
         soffice_path = shutil.which("soffice") or r"C:\Program Files\LibreOffice\program\soffice.exe"
 
         if os.path.exists(soffice_path):
+            command = [
+                soffice_path,
+                "--headless",
+                "--convert-to", "pptx",
+                pdf_path,
+                "--outdir", output_folder
+            ]
 
-            command = f'"{soffice_path}" --headless --convert-to pptx "{pdf_path}" --outdir "{output_folder}"'
-            result = subprocess.run(command, shell=True)
+            result = subprocess.run(command)
 
             base_name = os.path.splitext(os.path.basename(pdf_path))[0]
             output_file = os.path.join(output_folder, base_name + ".pptx")
@@ -26,9 +33,9 @@ def convert_pdf_to_ppt(pdf_path, output_folder):
             if result.returncode == 0 and os.path.exists(output_file):
                 return output_file
 
-        print("LibreOffice failed → using fallback method")
+        print("LibreOffice failed → using fallback")
 
-        # ===== FALLBACK: IMAGE BASED PPT =====
+        # ===== Fallback: Image-based PPT =====
         doc = fitz.open(pdf_path)
         prs = Presentation()
 
