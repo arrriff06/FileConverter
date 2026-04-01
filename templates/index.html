@@ -4,6 +4,7 @@
     <title>File Converter</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/transfer.css') }}">
 </head>
 
 <body>
@@ -106,9 +107,37 @@
     </form>
 
 </div>
-
+ 
 </main>
+<!-- ================= FILE TRANSFER ================= -->
+<section id="transfer" class="how-section">
+     
+<h2 class="section-title">File Transfer</h2>
+    <p class="section-subtitle">Send files to another device using a code</p>
+    <div class="transfer-container">
+ 
+        <!-- SEND SECTION -->
+        <div class="box">
+            <h3>Send File</h3>
 
+            <div id="uploadBox" class="upload-box">
+                <p>Drag & Drop file here or click to select</p>
+                <input type="file" id="transferFileInput" style="display:none;">
+            </div>
+             <div id="transferPreview"></div>
+            <button onclick="sendFile()">Send</button>
+            <p id="codeDisplay"></p>
+        </div>
+
+        <!-- RECEIVE SECTION -->
+        <div class="box">
+            <h3>Receive File</h3>
+            <input type="text" id="codeInput" placeholder="Enter Code">
+            <button onclick="receiveFile()">Receive</button>
+        </div>
+
+    </div>
+</section>
 <!-- ================= HOW IT WORKS ================= -->
 <section class="how-section">
 
@@ -173,6 +202,7 @@
 
 <!-- ================= JS ================= -->
 <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/transfer.js') }}" defer></script>
 
 </body>
 </html>

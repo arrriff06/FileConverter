@@ -1,0 +1,120 @@
+/* ---------- TRANSFER SECTION ---------- */
+#transfer {
+    margin-top: 120px;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+/* ---------- CONTAINER ---------- */
+.transfer-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+/* ---------- BOX ---------- */
+.box {
+    width: 420px;
+    max-width: 95%;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(18px);
+    padding: 30px 25px;
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08),
+                inset 0 0 0 1px rgba(255,255,255,0.4);
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.box:hover {
+    transform: translateY(-5px);
+}
+
+.box h3 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+/* ---------- INPUT ---------- */
+.box input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e0;
+    margin-bottom: 15px;
+}
+
+/* ---------- BUTTON ---------- */
+.box button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #d739dc, #a210b9);
+    transition: 0.25s;
+}
+
+.box button:hover {
+    transform: translateY(-3px);
+}
+
+/* ---------- UPLOAD BOX ---------- */
+.upload-box {
+    border: 2px dashed #cbd5e0;
+    padding: 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    background: #f9fbff;
+    transition: 0.25s;
+}
+
+.upload-box:hover {
+    border-color: #5a67d8;
+    background: #edf2ff;
+}
+
+/* ---------- FILE PREVIEW ---------- */
+#transferPreview {
+    margin-top: 15px;
+}
+
+.transfer-file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: #edf2f7;
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+/* remove button */
+.remove-file {
+    background: #ef4444;
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* ---------- CODE ---------- */
+#codeDisplay {
+    margin-top: 15px;
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 768px) {
+    .transfer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}

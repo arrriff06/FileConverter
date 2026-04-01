@@ -1,7 +1,5 @@
-import subprocess
 import os
-import shutil
-import fitz
+import fitz  # PyMuPDF
 from pptx import Presentation
 import time
 
@@ -13,44 +11,41 @@ def convert_pdf_to_ppt(pdf_path, output_folder):
 
         os.makedirs(output_folder, exist_ok=True)
 
-        # ===== Try LibreOffice =====
-        soffice_path = shutil.which("soffice") or r"C:\Program Files\LibreOffice\program\soffice.exe"
-
-        if os.path.exists(soffice_path):
-            command = [
-                soffice_path,
-                "--headless",
-                "--convert-to", "pptx",
-                pdf_path,
-                "--outdir", output_folder
-            ]
-
-            result = subprocess.run(command)
-
-            base_name = os.path.splitext(os.path.basename(pdf_path))[0]
-            output_file = os.path.join(output_folder, base_name + ".pptx")
-
-            if result.returncode == 0 and os.path.exists(output_file):
-                return output_file
-
-        print("LibreOffice failed → using fallback")
-
-        # ===== Fallback: Image-based PPT =====
+        # Open PDF
         doc = fitz.open(pdf_path)
+
+        # Create PPT
         prs = Presentation()
 
+        temp_images = []
+
         for i, page in enumerate(doc):
+            # Convert page to image
             pix = page.get_pixmap()
             img_path = os.path.join(output_folder, f"temp_{i}_{int(time.time())}.png")
             pix.save(img_path)
+            temp_images.append(img_path)
 
+            # Add slide
             slide = prs.slides.add_slide(prs.slide_layouts[6])
-            slide.shapes.add_picture(img_path, 0, 0, width=prs.slide_width)
+            slide.shapes.add_picture(
+                img_path,
+                0,
+                0,
+                width=prs.slide_width,
+                height=prs.slide_height
+            )
 
+        # Save output
         output_file = os.path.join(output_folder, f"converted_{int(time.time())}.pptx")
         prs.save(output_file)
 
         doc.close()
+
+        # Cleanup temp images
+        for img in temp_images:
+            if os.path.exists(img):
+                os.remove(img)
 
         return output_file
 
