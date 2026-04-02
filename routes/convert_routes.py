@@ -55,28 +55,63 @@ def generate_code():
 # ---------- TRANSFER ROUTES ----------
 @convert_bp.route('/transfer/send', methods=['POST'])
 def send_file_transfer():
-    file = request.files.get('file')
-    if not file:
-        return jsonify({"error": "No file"}), 400
+    files = request.files.getlist('files')
+
+    if not files or all(f.filename == '' for f in files):
+        return jsonify({"error": "No files provided"}), 400
 
     code = generate_code()
-    filename = code + "_" + file.filename
-    filepath = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
-    file.save(filepath)
+    saved_paths = []
+
+    for file in files:
+        if file and file.filename != '':
+            filename = code + "_" + file.filename
+            filepath = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
+            file.save(filepath)
+            saved_paths.append(filepath)
 
     files_db[code] = {
-        "path": filepath,
-        "time": time.time()
+        "paths": saved_paths,
+        "time": time.time(),
+        "count": len(saved_paths)
     }
 
-    return jsonify({"code": code})
+    return jsonify({"code": code, "count": len(saved_paths)})
+
+
+@convert_bp.route('/transfer/check/<code>', methods=['GET'])
+def check_code(code):
+    data = files_db.get(code.upper())
+    if not data:
+        return jsonify({"valid": False}), 200
+
+    if time.time() - data["time"] > 600:
+        del files_db[code.upper()]
+        return jsonify({"valid": False}), 200
+
+    return jsonify({"valid": True, "count": data["count"]}), 200
+
 
 @convert_bp.route('/transfer/receive/<code>', methods=['GET'])
 def receive_file_transfer(code):
-    data = files_db.get(code)
+    data = files_db.get(code.upper())
     if not data:
         return "Invalid or expired code", 404
-    return send_file(data["path"], as_attachment=True)
+
+    paths = data["paths"]
+
+    if len(paths) == 1:
+        return send_file(paths[0], as_attachment=True)
+
+    zip_name = f"transfer_{code}.zip"
+    zip_path = os.path.join(current_app.config["UPLOAD_FOLDER"], zip_name)
+
+    with zipfile.ZipFile(zip_path, 'w') as zipf:
+        for path in paths:
+            original_name = os.path.basename(path).replace(code + "_", "", 1)
+            zipf.write(path, original_name)
+
+    return send_file(zip_path, as_attachment=True, download_name=f"files_{code}.zip")
 
 # ---------- HOME ----------
 @convert_bp.route("/convert")
