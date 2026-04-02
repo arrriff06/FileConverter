@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Study Result</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="result-wrapper" style="padding: 20px;">
+        <div class="result-card" style="max-width: 950px; margin: 30px auto;">
+
+            <h1 class="title">📘 Notes / Study Output</h1>
+            <p class="subtitle">Summary, Key Points, Important Questions</p>
+
+            <hr style="margin: 20px 0;">
+
+            <h2>Summary</h2>
+            <p style="line-height: 1.8; margin-top: 10px;">{{ summary }}</p>
+
+            <hr style="margin: 24px 0;">
+
+            <h2>Key Points</h2>
+            <ul style="margin-top: 10px;">
+                {% for point in key_points %}
+                    <li style="margin-bottom: 10px; line-height: 1.7;">{{ point }}</li>
+                {% endfor %}
+            </ul>
+
+            <hr style="margin: 24px 0;">
+
+            <h2>Important Questions</h2>
+            <ol style="margin-top: 10px;">
+                {% for q in questions %}
+                    <li style="margin-bottom: 12px; line-height: 1.7;">{{ q }}</li>
+                {% endfor %}
+            </ol>
+
+            <div class="result-actions" style="margin-top: 30px;">
+                <a href="/"><button class="back-btn">🔁 Back to Home</button></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
