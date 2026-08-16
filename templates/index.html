@@ -124,37 +124,88 @@
     </form>
 
 
-<!-- ================= FILE TRANSFER ================= -->
+<!-- =========================================================
+     FILE TRANSFER
+     ========================================================= -->
+
 <section id="transfer" class="how-section">
-     
-<h2 class="section-title">File Transfer</h2>
-    <p class="section-subtitle">Send files to another device using a code</p>
+
+    <h2 class="section-title">File Transfer</h2>
+
+    <p class="section-subtitle">
+        Send files to another device using a code
+    </p>
+
     <div class="transfer-container">
- 
-        <!-- SEND SECTION -->
+
+        <!-- ================= SEND FILE ================= -->
+
         <div class="box">
+
             <h3>Send File</h3>
 
-            <div id="uploadBox" class="upload-box">
-                <p>Drag & Drop file here or click to select</p>
-                <input type="file" id="transferFileInput" style="display:none;" multiple accept=".jpg,.jpeg,.png,.pdf,.ppt,.pptx,.doc,.docx,.mp4,.mov,.avi,.mkv,.webm">
+            <div id="uploadBox" class="upload-box transfer-upload-box">
+
+                <p>
+                    Drag & Drop file here or click to select
+                </p>
+
+                <input
+                    type="file"
+                    id="transferFileInput"
+                    style="display:none;"
+                    multiple
+                    accept=".jpg,.jpeg,.png,.pdf,.ppt,.pptx,.doc,.docx,.mp4,.mov,.avi,.mkv,.webm"
+                >
+
             </div>
-             <div id="transferPreview"></div>
-            <button onclick="sendFile()">Send</button>
+
+            <div id="transferPreview"></div>
+
+            <button
+                type="button"
+                onclick="sendFile()"
+            >
+                Send
+            </button>
+
             <p id="codeDisplay"></p>
+
         </div>
 
-        <!-- RECEIVE SECTION -->
+
+        <!-- ================= RECEIVE FILE ================= -->
+
         <div class="box">
+
             <h3>Receive File</h3>
-            <input type="text" id="codeInput" placeholder="Enter Code">
-            <button onclick="receiveFile()">Receive</button>
+
+            <input
+                type="text"
+                id="codeInput"
+                placeholder="Enter Code"
+                autocomplete="off"
+            >
+
+            <button
+                type="button"
+                onclick="receiveFile()"
+            >
+                Receive
+            </button>
+
         </div>
 
-    
-<!-- ================= TEXT & CODE ROOM ================= -->
+    </div>
 
-<section id="text-room" class="how-section room-section">
+</section>
+
+
+<!-- =========================================================
+     TEXT & CODE ROOM
+     ========================================================= -->
+
+<section id="text-room" class="how-section">
 
     <div class="room-heading">
 
@@ -175,9 +226,12 @@
 
     <!-- ================= CREATE / JOIN ================= -->
 
-    <div id="roomStart" class="room-start">
+    <div
+        id="roomStart"
+        class="room-start"
+    >
 
-        <!-- CREATE ROOM -->
+        <!-- ================= CREATE ROOM ================= -->
 
         <div class="room-card">
 
@@ -185,7 +239,9 @@
                 +
             </div>
 
-            <h3>Create a Room</h3>
+            <h3>
+                Create a Room
+            </h3>
 
             <p>
                 Create a temporary room and share the
@@ -203,7 +259,7 @@
         </div>
 
 
-        <!-- JOIN ROOM -->
+        <!-- ================= JOIN ROOM ================= -->
 
         <div class="room-card">
 
@@ -211,7 +267,9 @@
                 ↗
             </div>
 
-            <h3>Join a Room</h3>
+            <h3>
+                Join a Room
+            </h3>
 
             <p>
                 Enter a room code to access shared
@@ -248,6 +306,8 @@
         style="display:none;"
     >
 
+        <!-- ================= ROOM HEADER ================= -->
+
         <div class="room-editor-header">
 
             <div>
@@ -274,6 +334,7 @@
 
             </div>
 
+
             <div class="room-status">
 
                 <span class="status-dot"></span>
@@ -287,7 +348,7 @@
         </div>
 
 
-        <!-- TOOLBAR -->
+        <!-- ================= TOOLBAR ================= -->
 
         <div class="room-toolbar">
 
@@ -323,7 +384,7 @@
         </div>
 
 
-        <!-- TEXT AREA -->
+        <!-- ================= TEXT AREA ================= -->
 
         <textarea
             id="roomContent"
@@ -332,7 +393,7 @@
         ></textarea>
 
 
-        <!-- FOOTER -->
+        <!-- ================= ROOM FOOTER ================= -->
 
         <div class="room-footer">
 
@@ -347,6 +408,8 @@
         </div>
 
 
+        <!-- ================= LEAVE ROOM ================= -->
+
         <button
             type="button"
             id="leaveRoomBtn"
@@ -359,170 +422,655 @@
 
 </section>
 
-</section>
-       <div class="box">
-            <h3>Merge PDFs</h3>
-            <form action="/convert/tools/merge-pdf" method="POST" enctype="multipart/form-data">
-                <input type="file" name="files" accept=".pdf" multiple required style="margin-bottom:12px;">
-                <button type="submit">Merge PDF</button>
+
+<!-- =========================================================
+     PDF TOOLS
+     ========================================================= -->
+
+<section id="pdf-tools" class="how-section">
+
+    <h2 class="section-title">
+        PDF Tools
+    </h2>
+
+    <p class="section-subtitle">
+        Merge, split, lock, and unlock your PDF files
+    </p>
+
+
+    <div class="transfer-container">
+
+        <!-- ================= MERGE PDF ================= -->
+
+        <div class="box">
+
+            <h3>
+                Merge PDFs
+            </h3>
+
+            <form
+                action="/convert/tools/merge-pdf"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="files"
+                    accept=".pdf"
+                    multiple
+                    required
+                >
+
+                <button
+                    type="submit"
+                >
+                    Merge PDF
+                </button>
+
             </form>
+
         </div>
 
-        <!-- SPLIT -->
+
+        <!-- ================= SPLIT PDF ================= -->
+
         <div class="box">
-            <h3>Split PDF</h3>
-            <form action="/convert/tools/split-pdf" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".pdf" required style="margin-bottom:12px;">
-                <input type="number" name="start_page" placeholder="Start page (e.g. 1)" min="1" required>
-                <input type="number" name="end_page" placeholder="End page (e.g. 3)" min="1" required style="margin-top:10px; margin-bottom:12px;">
-                <button type="submit">Split PDF</button>
+
+            <h3>
+                Split PDF
+            </h3>
+
+            <form
+                action="/convert/tools/split-pdf"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="start_page"
+                    placeholder="Start page (e.g. 1)"
+                    min="1"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="end_page"
+                    placeholder="End page (e.g. 3)"
+                    min="1"
+                    required
+                >
+
+                <button
+                    type="submit"
+                >
+                    Split PDF
+                </button>
+
             </form>
+
         </div>
 
-        <!-- LOCK -->
+
+        <!-- ================= LOCK PDF ================= -->
+
         <div class="box">
-            <h3>Lock PDF</h3>
-            <form action="/convert/tools/lock-pdf" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".pdf" required style="margin-bottom:12px;">
-                <input type="password" name="password" placeholder="Enter password" required style="margin-bottom:12px;">
-                <button type="submit">Lock PDF</button>
+
+            <h3>
+                Lock PDF
+            </h3>
+
+            <form
+                action="/convert/tools/lock-pdf"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf"
+                    required
+                >
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter password"
+                    required
+                >
+
+                <button
+                    type="submit"
+                >
+                    Lock PDF
+                </button>
+
             </form>
+
         </div>
 
-        <!-- UNLOCK -->
+
+        <!-- ================= UNLOCK PDF ================= -->
+
         <div class="box">
-            <h3>Unlock PDF</h3>
-            <form action="/convert/tools/unlock-pdf" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".pdf" required style="margin-bottom:12px;">
-                <input type="password" name="password" placeholder="Enter password" required style="margin-bottom:12px;">
-                <button type="submit">Unlock PDF</button>
+
+            <h3>
+                Unlock PDF
+            </h3>
+
+            <form
+                action="/convert/tools/unlock-pdf"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf"
+                    required
+                >
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter password"
+                    required
+                >
+
+                <button
+                    type="submit"
+                >
+                    Unlock PDF
+                </button>
+
             </form>
+
         </div>
 
     </div>
+
 </section>
-<!-- ================= DOCUMENT UTILITIES ================= -->
+
+
+<!-- =========================================================
+     DOCUMENT UTILITIES
+     ========================================================= -->
+
 <section id="document-tools" class="how-section">
-    <h2 class="section-title">Document Utilities</h2>
-    <p class="section-subtitle">Add page numbers, rotate pages, and reorder PDF</p>
+
+    <h2 class="section-title">
+        Document Utilities
+    </h2>
+
+    <p class="section-subtitle">
+        Add page numbers, rotate pages, and reorder PDF
+    </p>
+
 
     <div class="transfer-container">
 
-        <div class="box">
-            <h3>Add Page Numbers</h3>
-            <form action="/convert/tools/add-page-numbers" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".pdf" required style="margin-bottom:12px;">
-                <button type="submit">Add Numbers</button>
-            </form>
-        </div>
+        <!-- ================= ADD PAGE NUMBERS ================= -->
 
         <div class="box">
-            <h3>Rotate PDF</h3>
-            <form action="/convert/tools/rotate-pdf" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".pdf" required style="margin-bottom:12px;">
-                <select name="angle" required style="width:100%; padding:12px; border-radius:10px; margin-bottom:12px;">
-                    <option value="90">90°</option>
-                    <option value="180">180°</option>
-                    <option value="270">270°</option>
+
+            <h3>
+                Add Page Numbers
+            </h3>
+
+            <form
+                action="/convert/tools/add-page-numbers"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf"
+                    required
+                >
+
+                <button
+                    type="submit"
+                >
+                    Add Numbers
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- ================= ROTATE PDF ================= -->
+
+        <div class="box">
+
+            <h3>
+                Rotate PDF
+            </h3>
+
+            <form
+                action="/convert/tools/rotate-pdf"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf"
+                    required
+                >
+
+                <select
+                    name="angle"
+                    required
+                >
+
+                    <option value="90">
+                        90°
+                    </option>
+
+                    <option value="180">
+                        180°
+                    </option>
+
+                    <option value="270">
+                        270°
+                    </option>
+
                 </select>
-                <button type="submit">Rotate</button>
+
+                <button
+                    type="submit"
+                >
+                    Rotate
+                </button>
+
             </form>
+
         </div>
 
+
+        <!-- ================= REORDER PDF ================= -->
+
         <div class="box">
-            <h3>Reorder PDF Pages</h3>
-            <form action="/convert/tools/reorder-pdf" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".pdf" required style="margin-bottom:12px;">
-                <input type="text" name="page_order" placeholder="Example: 3,1,2,4" required>
-                <button type="submit" style="margin-top:12px;">Reorder</button>
+
+            <h3>
+                Reorder PDF Pages
+            </h3>
+
+            <form
+                action="/convert/tools/reorder-pdf"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf"
+                    required
+                >
+
+                <input
+                    type="text"
+                    name="page_order"
+                    placeholder="Example: 3,1,2,4"
+                    required
+                >
+
+                <button
+                    type="submit"
+                >
+                    Reorder
+                </button>
+
             </form>
+
         </div>
 
     </div>
+
 </section>
 
-<!-- ================= IMAGE TOOLS ================= -->
+
+<!-- =========================================================
+     IMAGE TOOLS
+     ========================================================= -->
+
 <section id="image-tools" class="how-section">
-    <h2 class="section-title">Image Tools</h2>
-    <p class="section-subtitle">Resize, compress, crop, watermark, and convert formats</p>
+
+    <h2 class="section-title">
+        Image Tools
+    </h2>
+
+    <p class="section-subtitle">
+        Resize, compress, crop, watermark, and convert formats
+    </p>
+
 
     <div class="transfer-container">
 
-        <div class="box">
-            <h3>Resize Image</h3>
-            <form action="/convert/tools/image-resize" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required style="margin-bottom:12px;">
-                <input type="number" name="width" placeholder="Width (px)" required>
-                <input type="number" name="height" placeholder="Height (px)" required style="margin-top:10px; margin-bottom:12px;">
-                <button type="submit">Resize</button>
-            </form>
-        </div>
+        <!-- ================= RESIZE ================= -->
 
         <div class="box">
-            <h3>Compress Image</h3>
-            <form action="/convert/tools/image-compress" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required style="margin-bottom:12px;">
-                <input type="number" name="quality" min="1" max="95" placeholder="Quality (1-95)" required style="margin-bottom:12px;">
-                <button type="submit">Compress</button>
+
+            <h3>
+                Resize Image
+            </h3>
+
+            <form
+                action="/convert/tools/image-resize"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="width"
+                    placeholder="Width (px)"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="height"
+                    placeholder="Height (px)"
+                    required
+                >
+
+                <button
+                    type="submit"
+                >
+                    Resize
+                </button>
+
             </form>
+
         </div>
 
-        <div class="box">
-            <h3>Crop Image</h3>
-            <form action="/convert/tools/image-crop" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required style="margin-bottom:12px;">
-                <input type="number" name="x" placeholder="X" required>
-                <input type="number" name="y" placeholder="Y" required style="margin-top:10px;">
-                <input type="number" name="w" placeholder="Width" required style="margin-top:10px;">
-                <input type="number" name="h" placeholder="Height" required style="margin-top:10px; margin-bottom:12px;">
-                <button type="submit">Crop</button>
-            </form>
-        </div>
+
+        <!-- ================= COMPRESS ================= -->
 
         <div class="box">
-            <h3>Watermark Image</h3>
-            <form action="/convert/tools/image-watermark" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required style="margin-bottom:12px;">
-                <input type="text" name="text" placeholder="Watermark text" required style="margin-bottom:12px;">
-                <button type="submit">Watermark</button>
+
+            <h3>
+                Compress Image
+            </h3>
+
+            <form
+                action="/convert/tools/image-compress"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="quality"
+                    min="1"
+                    max="95"
+                    placeholder="Quality (1-95)"
+                    required
+                >
+
+                <button
+                    type="submit"
+                >
+                    Compress
+                </button>
+
             </form>
+
         </div>
 
+
+        <!-- ================= CROP ================= -->
+
         <div class="box">
-            <h3>Convert Format</h3>
-            <form action="/convert/tools/image-convert" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required style="margin-bottom:12px;">
-                <select name="target_format" required style="width:100%; padding:12px; border-radius:10px; margin-bottom:12px;">
-                    <option value="JPG">JPG</option>
-                    <option value="PNG">PNG</option>
-                    <option value="WEBP">WEBP</option>
+
+            <h3>
+                Crop Image
+            </h3>
+
+            <form
+                action="/convert/tools/image-crop"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="x"
+                    placeholder="X"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="y"
+                    placeholder="Y"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="w"
+                    placeholder="Width"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="h"
+                    placeholder="Height"
+                    required
+                >
+
+                <button
+                    type="submit"
+                >
+                    Crop
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- ================= WATERMARK ================= -->
+
+        <div class="box">
+
+            <h3>
+                Watermark Image
+            </h3>
+
+            <form
+                action="/convert/tools/image-watermark"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    required
+                >
+
+                <input
+                    type="text"
+                    name="text"
+                    placeholder="Watermark text"
+                    required
+                >
+
+                <button
+                    type="submit"
+                >
+                    Watermark
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- ================= CONVERT FORMAT ================= -->
+
+        <div class="box">
+
+            <h3>
+                Convert Format
+            </h3>
+
+            <form
+                action="/convert/tools/image-convert"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    required
+                >
+
+                <select
+                    name="target_format"
+                    required
+                >
+
+                    <option value="JPG">
+                        JPG
+                    </option>
+
+                    <option value="PNG">
+                        PNG
+                    </option>
+
+                    <option value="WEBP">
+                        WEBP
+                    </option>
+
                 </select>
-                <button type="submit">Convert</button>
+
+                <button
+                    type="submit"
+                >
+                    Convert
+                </button>
+
             </form>
+
         </div>
 
     </div>
+
 </section>
 
-<!-- ================= NOTES / STUDY ================= -->
+
+<!-- =========================================================
+     NOTES / STUDY
+     ========================================================= -->
+
 <section id="study-tools" class="how-section">
-    <h2 class="section-title">Notes / Study</h2>
-    <p class="section-subtitle">Generate summary, key points, and important questions from PDF</p>
+
+    <h2 class="section-title">
+        Notes / Study
+    </h2>
+
+    <p class="section-subtitle">
+        Generate summary, key points, and important questions from PDF
+    </p>
+
 
     <div class="transfer-container">
+
         <div class="box">
-            <h3>Analyze PDF</h3>
-            <form action="/convert/study/analyze-pdf" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".pdf" required style="margin-bottom:12px;">
-                <select name="summary_length" required style="width:100%; padding:12px; border-radius:10px; margin-bottom:12px;">
-                    <option value="short">Short</option>
-                    <option value="medium" selected>Medium</option>
-                    <option value="long">Long</option>
+
+            <h3>
+                Analyze PDF
+            </h3>
+
+            <form
+                action="/convert/study/analyze-pdf"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf"
+                    required
+                >
+
+                <select
+                    name="summary_length"
+                    required
+                >
+
+                    <option value="short">
+                        Short
+                    </option>
+
+                    <option value="medium" selected>
+                        Medium
+                    </option>
+
+                    <option value="long">
+                        Long
+                    </option>
+
                 </select>
-                <button type="submit">Generate Notes</button>
+
+                <button
+                    type="submit"
+                >
+                    Generate Notes
+                </button>
+
             </form>
+
         </div>
+
     </div>
+
 </section>
 <!-- ================= HOW IT WORKS ================= -->
 <section class="how-section">
