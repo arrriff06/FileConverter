@@ -1,0 +1,27 @@
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# VS Code
+.vscode/
+
+# Local files
+uploads/*
+outputs/*
+static/qr/*
+
+# Keep folder structure
+!uploads/.gitkeep
+!outputs/.gitkeep
+!static/qr/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,133 @@
+<!DOCTYPE html> 
+<html>
+
+<head>
+<title>Conversion Result</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="result-wrapper">
+<div class="result-card">
+
+    <!-- Success -->
+    <div class="success-badge">✔ Conversion Successful</div>
+
+    <h1 class="title">Your File is Ready</h1>
+    <p class="subtitle">Preview, edit, and download your file</p>
+
+    <!-- Preview -->
+    <div class="preview-container">
+
+    {% if files %}
+
+        {% for file in files %}
+            <img 
+            src="{{ url_for('convert_bp.view_file', filename=file) }}"
+            class="preview-gallery"
+            onclick="selectImage(this)">
+        {% endfor %}
+
+    {% elif filename.endswith('.jpg') or filename.endswith('.png') %}
+
+        <img id="previewImage"
+        src="{{ url_for('convert_bp.view_file', filename=filename) }}"
+        onclick="selectImage(this)">
+
+    {% elif filename.endswith('.pdf') %}
+
+        <iframe src="{{ url_for('convert_bp.view_file', filename=filename) }}"></iframe>
+
+    {% elif filename.endswith('.ppt') or filename.endswith('.pptx') %}
+
+        <div class="file-preview">
+            📊 PowerPoint file generated <br><br>
+            Click download to view slides
+        </div>
+
+    {% elif filename.endswith('.zip') %}
+
+        <div class="file-preview">
+            📦 Multiple images generated <br><br>
+            Click download to get all pages
+        </div>
+
+    {% else %}
+
+        <div class="file-preview">
+            📄 {{ filename }}<br><br>
+            Preview not available
+        </div>
+
+    {% endif %}
+
+    </div>
+
+    <!-- EDIT TOOLS (WORKS FOR CLICKED IMAGE) -->
+    <div class="edit-tools" id="editSection">
+    <button onclick="rotateImage()">Rotate</button>
+    <button onclick="flipImage()">Flip</button>
+    <button onclick="resetImage()">Reset</button>
+</div>
+<div class="crop-tools" id="cropSection">
+    <button onclick="startCrop()">✂ Start Crop</button>
+    <button onclick="applyCrop()">✅ Apply Crop</button>
+</div>
+
+<canvas id="cropCanvas" style="display:none;"></canvas>
+    <!-- ACTIONS -->
+    <div class="result-actions">
+
+        <a href="{{ url_for('convert_bp.download_file', filename=filename) }}">
+            <button class="download-btn">⬇ Download</button>
+        </a>
+
+        <a href="/">
+            <button class="back-btn">🔁 Convert Another</button>
+        </a>
+
+    </div>
+{% if qr_image %}
+<div style="margin-top:30px; text-align:center;">
+
+    <h3>📲 Send to Phone</h3>
+
+    <img src="{{ url_for('static', filename=qr_image) }}" width="200">
+
+    <p style="margin-top:10px;">
+        Scan this QR code to download your file instantly on your phone
+    </p>
+
+</div>
+{% endif %}
+</div>
+</div>
+
+<!-- SUCCESS POPUP -->
+<div id="successPopup" class="popup">
+    <div class="popup-box">
+        <h2>✅ Conversion Completed</h2>
+        <p>Your file is ready to download</p>
+        <button onclick="closePopup()">OK</button>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+<script>
+window.onload = function(){
+    setTimeout(()=>{
+        document.getElementById("successPopup").style.display = "flex";
+    }, 500);
+}
+
+function closePopup(){
+    document.getElementById("successPopup").style.display = "none";
+}
+</script>
+<script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+</body>
+</html>

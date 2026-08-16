@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Text Room | FileConverter</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/room.css') }}"
+    >
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <div class="logo">
+
+            <img
+                src="{{ url_for('static', filename='images/logo.png') }}"
+                alt="FileConverter"
+            >
+
+            <span>FileConverter</span>
+
+        </div>
+
+        <nav class="nav-links">
+
+            <a href="/">Home</a>
+
+            <a href="/#transfer">File Transfer</a>
+
+            <a href="/#about">About</a>
+
+            <a href="/convert/contact">Contact</a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- ================= ROOM ================= -->
+
+<main class="room-page">
+
+    <section class="room-hero">
+
+        <div class="room-badge">
+            QUICK SHARE
+        </div>
+
+        <h1>
+            Share Text & Code
+            <span>Instantly</span>
+        </h1>
+
+        <p>
+            Create a private room, paste anything you want,
+            and share it using a simple room code.
+        </p>
+
+    </section>
+
+
+    <!-- ================= CREATE / JOIN ================= -->
+
+    <section id="roomStart" class="room-start">
+
+        <!-- CREATE -->
+
+        <div class="room-card">
+
+            <div class="card-icon">
+                +
+            </div>
+
+            <h2>Create a Room</h2>
+
+            <p>
+                Create a temporary room and share your
+                text or code with another device.
+            </p>
+
+            <button
+                id="createRoomBtn"
+                class="primary-btn"
+            >
+                Create Room
+            </button>
+
+        </div>
+
+
+        <div class="room-divider">
+            <span>OR</span>
+        </div>
+
+
+        <!-- JOIN -->
+
+        <div class="room-card">
+
+            <div class="card-icon">
+                ↗
+            </div>
+
+            <h2>Join a Room</h2>
+
+            <p>
+                Enter a room code to access shared
+                text or code.
+            </p>
+
+            <input
+                type="text"
+                id="joinCode"
+                class="room-code-input"
+                placeholder="ENTER ROOM CODE"
+                maxlength="6"
+                autocomplete="off"
+            >
+
+            <button
+                id="joinRoomBtn"
+                class="primary-btn"
+            >
+                Join Room
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ROOM EDITOR ================= -->
+
+    <section
+        id="roomEditor"
+        class="room-editor"
+        style="display:none;"
+    >
+
+        <div class="room-editor-header">
+
+            <div>
+
+                <span class="room-label">
+                    ROOM CODE
+                </span>
+
+                <div class="room-code-display">
+
+                    <strong id="roomCode">
+                        ------ 
+                    </strong>
+
+                    <button
+                        id="copyRoomCodeBtn"
+                        class="small-btn"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="room-status">
+
+                <span class="status-dot"></span>
+
+                <span id="roomStatus">
+                    Connected
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOOLBAR -->
+
+        <div class="room-toolbar">
+
+            <div class="room-type-buttons">
+
+                <button
+                    class="type-btn active"
+                    data-type="text"
+                >
+                    Text
+                </button>
+
+                <button
+                    class="type-btn"
+                    data-type="code"
+                >
+                    Code
+                </button>
+
+            </div>
+
+            <button
+                id="copyContentBtn"
+                class="copy-btn"
+            >
+                Copy Content
+            </button>
+
+        </div>
+
+
+        <!-- EDITOR -->
+
+        <textarea
+            id="roomContent"
+            placeholder="Paste your text or code here..."
+            spellcheck="false"
+        ></textarea>
+
+
+        <div class="room-footer">
+
+            <span id="characterCount">
+                0 characters
+            </span>
+
+            <span id="saveStatus">
+                Ready
+            </span>
+
+        </div>
+
+
+        <button
+            id="leaveRoomBtn"
+            class="leave-btn"
+        >
+            Leave Room
+        </button>
+
+    </section>
+
+</main>
+
+
+<script
+    src="{{ url_for('static', filename='js/room.js') }}"
+></script>
+
+</body>
+
+</html>
