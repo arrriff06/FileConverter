@@ -10,32 +10,38 @@
 <body>
 
 <!-- ================= NAVBAR ================= -->
+
 <header class="navbar">
+
     <div class="nav-container">
 
         <div class="logo">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+
+            <img
+                src="{{ url_for('static', filename='images/logo.png') }}"
+                alt="FileConverter"
+            >
+
             <span>FileConverter</span>
+
         </div>
-<<<<<<< HEAD
-<nav class="nav-links">
-    <a href="/">Home</a>
-    <a href="#transfer">File Transfer</a>
-    <a href="#text-room">Text & Code</a>
-    <a href="#about">About</a>
-    <a href="/convert/contact">Contact</a>
-</nav>
-        
-=======
 
         <nav class="nav-links">
+
             <a href="/">Home</a>
+
+            <a href="#transfer">File Transfer</a>
+
+            <a href="#text-room">Text & Code</a>
+
             <a href="#about">About</a>
+
             <a href="/convert/contact">Contact</a>
+
         </nav>
->>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
 
     </div>
+
 </header>
 
 
@@ -117,13 +123,7 @@
 
     </form>
 
-</div>
- 
-</main>
-<<<<<<< HEAD
 
-=======
->>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
 <!-- ================= FILE TRANSFER ================= -->
 <section id="transfer" class="how-section">
      
@@ -151,162 +151,216 @@
             <button onclick="receiveFile()">Receive</button>
         </div>
 
-    </div>
-</section>
-<<<<<<< HEAD
-<!-- ================= TEXT / CODE ROOM ================= -->
-<section id="text-room" class="room-section">
+    
+<!-- ================= TEXT & CODE ROOM ================= -->
 
-    <div class="room-header">
-        <span class="room-badge">SHARE INSTANTLY</span>
+<section id="text-room" class="how-section room-section">
 
-        <h2 class="section-title">Text & Code Room</h2>
+    <div class="room-heading">
+
+        <span class="room-badge">
+            QUICK SHARE
+        </span>
+
+        <h2 class="section-title">
+            Text & Code Room
+        </h2>
 
         <p class="section-subtitle">
-            Create a private room, paste your text or code,
-            and let another device access it instantly.
+            Share text and code instantly using a temporary room
         </p>
+
     </div>
 
-    <div class="room-container">
 
-        <!-- ================= CREATE ROOM ================= -->
-        <div class="room-box">
+    <!-- ================= CREATE / JOIN ================= -->
 
-            <div class="room-icon">✦</div>
+    <div id="roomStart" class="room-start">
+
+        <!-- CREATE ROOM -->
+
+        <div class="room-card">
+
+            <div class="room-card-icon">
+                +
+            </div>
 
             <h3>Create a Room</h3>
 
-            <p class="room-description">
-                Paste any text, notes, links, or programming code
-                and create a room to share it.
+            <p>
+                Create a temporary room and share the
+                room code with another device.
             </p>
-
-            <textarea
-                id="roomTextInput"
-                class="room-textarea"
-                placeholder="Paste your text or code here..."
-                spellcheck="false"
-            ></textarea>
-
-            <div class="room-meta">
-                <span id="roomCharCount">0 characters</span>
-            </div>
 
             <button
                 type="button"
-                class="room-primary-btn"
                 id="createRoomBtn"
-                onclick="createRoom()"
+                class="room-primary-btn"
             >
                 Create Room
             </button>
 
-            <div id="createdRoomResult" class="room-result hidden">
-
-                <span class="result-label">
-                    Your Room Code
-                </span>
-
-                <div class="room-code-display">
-                    <strong id="createdRoomCode"></strong>
-
-                    <button
-                        type="button"
-                        onclick="copyRoomCode()"
-                        class="copy-code-btn"
-                    >
-                        Copy
-                    </button>
-                </div>
-
-                <p>
-                    Share this code with the other device.
-                </p>
-
-            </div>
-
         </div>
 
 
-        <!-- ================= JOIN ROOM ================= -->
-        <div class="room-box">
+        <!-- JOIN ROOM -->
 
-            <div class="room-icon join-icon">↗</div>
+        <div class="room-card">
+
+            <div class="room-card-icon">
+                ↗
+            </div>
 
             <h3>Join a Room</h3>
 
-            <p class="room-description">
-                Enter a room code to access the shared
+            <p>
+                Enter a room code to access shared
                 text or code.
             </p>
 
-            <div class="room-join-area">
+            <input
+                type="text"
+                id="joinCode"
+                class="room-code-input"
+                placeholder="ENTER 6-CHARACTER CODE"
+                maxlength="6"
+                autocomplete="off"
+            >
 
-                <input
-                    type="text"
-                    id="joinRoomCode"
-                    class="room-code-input"
-                    placeholder="ENTER ROOM CODE"
-                    maxlength="6"
-                    autocomplete="off"
-                >
-
-                <button
-                    type="button"
-                    class="room-primary-btn"
-                    onclick="joinRoom()"
-                >
-                    Join Room
-                </button>
-
-            </div>
-
-            <!-- Shared Content -->
-            <div id="roomContent" class="shared-content hidden">
-
-                <div class="shared-content-header">
-
-                    <span>Shared Content</span>
-
-                    <button
-                        type="button"
-                        class="copy-content-btn"
-                        onclick="copyRoomContent()"
-                    >
-                        Copy
-                    </button>
-
-                </div>
-
-                <pre
-                    id="sharedRoomText"
-                    class="shared-text"
-                ></pre>
-
-                <span
-                    id="copyStatus"
-                    class="copy-status"
-                ></span>
-
-            </div>
+            <button
+                type="button"
+                id="joinRoomBtn"
+                class="room-primary-btn"
+            >
+                Join Room
+            </button>
 
         </div>
 
     </div>
 
+
+    <!-- ================= ROOM EDITOR ================= -->
+
+    <div
+        id="roomEditor"
+        class="room-editor"
+        style="display:none;"
+    >
+
+        <div class="room-editor-header">
+
+            <div>
+
+                <span class="room-label">
+                    ROOM CODE
+                </span>
+
+                <div class="room-code-display">
+
+                    <strong id="roomCode">
+                        ------
+                    </strong>
+
+                    <button
+                        type="button"
+                        id="copyRoomCodeBtn"
+                        class="small-btn"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="room-status">
+
+                <span class="status-dot"></span>
+
+                <span id="roomStatus">
+                    Connected
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOOLBAR -->
+
+        <div class="room-toolbar">
+
+            <div class="room-type-buttons">
+
+                <button
+                    type="button"
+                    class="type-btn active"
+                    data-type="text"
+                >
+                    Text
+                </button>
+
+                <button
+                    type="button"
+                    class="type-btn"
+                    data-type="code"
+                >
+                    Code
+                </button>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="copyContentBtn"
+                class="copy-btn"
+            >
+                Copy Content
+            </button>
+
+        </div>
+
+
+        <!-- TEXT AREA -->
+
+        <textarea
+            id="roomContent"
+            placeholder="Paste your text or code here..."
+            spellcheck="false"
+        ></textarea>
+
+
+        <!-- FOOTER -->
+
+        <div class="room-footer">
+
+            <span id="characterCount">
+                0 characters
+            </span>
+
+            <span id="saveStatus">
+                Ready
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="leaveRoomBtn"
+            class="leave-btn"
+        >
+            Leave Room
+        </button>
+
+    </div>
+
 </section>
-=======
->>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
-<!-- ================= PDF TOOLS ================= -->
-<section id="pdf-tools" class="how-section">
-    <h2 class="section-title">PDF Tools</h2>
-    <p class="section-subtitle">Merge, Split, Lock, and Unlock PDF files</p>
 
-    <div class="transfer-container">
-
-        <!-- MERGE -->
-        <div class="box">
+</section>
+       <div class="box">
             <h3>Merge PDFs</h3>
             <form action="/convert/tools/merge-pdf" method="POST" enctype="multipart/form-data">
                 <input type="file" name="files" accept=".pdf" multiple required style="margin-bottom:12px;">
@@ -612,6 +666,8 @@
 <!-- ================= JS ================= -->
 <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/transfer.js') }}" defer></script>
+
+<script src="{{ url_for('static', filename='js/room.js') }}" defer></script>
 
 </body>
 </html>

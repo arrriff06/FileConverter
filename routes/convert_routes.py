@@ -31,11 +31,8 @@ file_expiry = {}
 
 # ---------- TRANSFER FILES DB ----------
 files_db = {}
-<<<<<<< HEAD
 # ---------- TEXT / CODE ROOMS ----------
 rooms_db = {}
-=======
->>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
 
 # ---------- Allowed File Types ----------
 def allowed_file(filename):
@@ -126,80 +123,6 @@ def receive_file_transfer(code):
             zipf.write(path, original_name)
 
     return send_file(zip_path, as_attachment=True, download_name=f"files_{code}.zip")
-<<<<<<< HEAD
-    # =========================================================
-# TEXT / CODE ROOM ROUTES
-# =========================================================
-
-@convert_bp.route("/room/create", methods=["POST"])
-def create_room():
-
-    data = request.get_json(silent=True)
-
-    if not data:
-        return jsonify({
-            "error": "Invalid request."
-        }), 400
-
-    text = data.get("text", "").strip()
-
-    if not text:
-        return jsonify({
-            "error": "Text cannot be empty."
-        }), 400
-
-    # Limit room size to prevent abuse
-    if len(text) > 50000:
-        return jsonify({
-            "error": "Text is too large. Maximum 50,000 characters."
-        }), 413
-
-    # Generate a unique room code
-    code = generate_code()
-
-    while code in rooms_db:
-        code = generate_code()
-
-    rooms_db[code] = {
-        "text": text,
-        "time": time.time()
-    }
-
-    print(f"[ROOM CREATED] {code}")
-
-    return jsonify({
-        "success": True,
-        "code": code
-    })
-
-
-@convert_bp.route("/room/<code>", methods=["GET"])
-def get_room(code):
-
-    code = code.strip().upper()
-
-    room = rooms_db.get(code)
-
-    if not room:
-        return jsonify({
-            "error": "Room not found or expired."
-        }), 404
-
-    # Room expires after 30 minutes
-    if time.time() - room["time"] > 1800:
-
-        del rooms_db[code]
-
-        return jsonify({
-            "error": "This room has expired."
-        }), 410
-
-    return jsonify({
-        "success": True,
-        "text": room["text"]
-    })
-=======
->>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
 
 # ---------- HOME ----------
 @convert_bp.route("/convert")

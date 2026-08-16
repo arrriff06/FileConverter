@@ -336,7 +336,7 @@ function applyCrop() {
         cropMode = false;
         currentImage.style.cursor = "default";
     };
-<<<<<<< HEAD
+
 }
 /* =========================================================
    TEXT / CODE ROOM
@@ -579,6 +579,5 @@ if (joinRoomCode) {
 
     });
 
-=======
->>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
+
 }

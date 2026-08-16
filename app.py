@@ -4,12 +4,9 @@ import threading
 import time
 
 from routes.convert_routes import convert_bp
-<<<<<<< HEAD
 from routes.room_routes import room_bp
-=======
->>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
 from config import UPLOAD_FOLDER, OUTPUT_FOLDER
-from cleanup import cleanup  # ✅ import cleanup
+from cleanup import cleanup
 
 app = Flask(__name__)
 
@@ -28,23 +25,28 @@ def run_cleanup():
             cleanup()
         except Exception as e:
             print(f"[CLEANUP ERROR] {e}")
-        time.sleep(300)  # run every 5 minutes
+
+        time.sleep(300)
 
 
-# Start cleanup thread (runs in background)
-cleanup_thread = threading.Thread(target=run_cleanup, daemon=True)
+# Start cleanup thread
+cleanup_thread = threading.Thread(
+    target=run_cleanup,
+    daemon=True
+)
 cleanup_thread.start()
 
 
-# ---------- REGISTER BLUEPRINT ----------
-app.register_blueprint(convert_bp, url_prefix="/convert")
-<<<<<<< HEAD
+# ---------- REGISTER BLUEPRINTS ----------
+app.register_blueprint(
+    convert_bp,
+    url_prefix="/convert"
+)
+
 app.register_blueprint(room_bp)
-=======
->>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
 
 
-# ---------- ROUTES ----------
+# ---------- MAIN ROUTES ----------
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -63,4 +65,8 @@ def transfer_page():
 # ---------- RUN APP ----------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+
+    app.run(
+        host="0.0.0.0",
+        port=port
+    )
