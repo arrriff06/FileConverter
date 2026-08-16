@@ -197,4 +197,8 @@ async function receiveFile() {
     } catch (err) {
         window.location.href = `/convert/transfer/receive/${code}`;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f

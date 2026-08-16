@@ -31,8 +31,11 @@ file_expiry = {}
 
 # ---------- TRANSFER FILES DB ----------
 files_db = {}
+<<<<<<< HEAD
 # ---------- TEXT / CODE ROOMS ----------
 rooms_db = {}
+=======
+>>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
 
 # ---------- Allowed File Types ----------
 def allowed_file(filename):
@@ -123,6 +126,7 @@ def receive_file_transfer(code):
             zipf.write(path, original_name)
 
     return send_file(zip_path, as_attachment=True, download_name=f"files_{code}.zip")
+<<<<<<< HEAD
     # =========================================================
 # TEXT / CODE ROOM ROUTES
 # =========================================================
@@ -194,6 +198,8 @@ def get_room(code):
         "success": True,
         "text": room["text"]
     })
+=======
+>>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
 
 # ---------- HOME ----------
 @convert_bp.route("/convert")

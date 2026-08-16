@@ -4,7 +4,10 @@ import threading
 import time
 
 from routes.convert_routes import convert_bp
+<<<<<<< HEAD
 from routes.room_routes import room_bp
+=======
+>>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
 from config import UPLOAD_FOLDER, OUTPUT_FOLDER
 from cleanup import cleanup  # ✅ import cleanup
 
@@ -35,7 +38,10 @@ cleanup_thread.start()
 
 # ---------- REGISTER BLUEPRINT ----------
 app.register_blueprint(convert_bp, url_prefix="/convert")
+<<<<<<< HEAD
 app.register_blueprint(room_bp)
+=======
+>>>>>>> 9b92c2a49887cbdad269b74e99bd8004a7d0209f
 
 
 # ---------- ROUTES ----------
