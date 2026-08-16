@@ -1,15 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>File Converter</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/transfer.css') }}">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Transfer CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/transfer.css') }}">
+
 </head>
+
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
+
+<!-- =========================================================
+     NAVBAR
+     ========================================================= -->
 
 <header class="navbar">
 
@@ -26,17 +43,30 @@
 
         </div>
 
+
         <nav class="nav-links">
 
             <a href="/">Home</a>
 
-            <a href="#transfer">File Transfer</a>
+            <a href="#transfer">
+                File Transfer
+            </a>
 
-            <a href="#text-room">Text & Code</a>
+            <a href="#text-room">
+                Text & Code
+            </a>
 
-            <a href="#about">About</a>
+            <a href="#study-tools">
+                Notes / Study
+            </a>
 
-            <a href="/convert/contact">Contact</a>
+            <a href="#about">
+                About
+            </a>
+
+            <a href="/convert/contact">
+                Contact
+            </a>
 
         </nav>
 
@@ -45,165 +75,211 @@
 </header>
 
 
-<!-- ================= MAIN SECTION ================= -->
-<main class="main-content">
-
-<div class="container">
-
-    <h1 class="title">Universal File Converter</h1>
-    <p class="subtitle">Convert your files instantly</p>
-
-    <form id="uploadForm" action="/convert" method="POST" enctype="multipart/form-data">
-
-        <!-- Upload Box -->
-        <div class="upload-box" id="dropArea">
-            <p class="upload-text">Drag & Drop Files Here</p>
-            <p class="upload-sub">or click to upload</p>
-
-            <input 
-                type="file" 
-                name="file" 
-                id="fileInput" 
-                multiple 
-                accept=".jpg,.jpeg,.png,.pdf,.ppt,.pptx,.doc,.docx"
-                hidden
-            >
-        </div>
-
-        <!-- File Preview -->
-        <div id="filePreview" class="file-preview-list"></div>
-
-        <!-- Conversion -->
-        <div class="custom-select" id="customSelect">
-
-    <div class="select-box">
-        <span class="selected">Select Conversion Type</span>
-        <span class="arrow">&#9662;</span>
-    </div>
-
-    <div class="options-container">
-
-        <div class="option" data-value="jpg_to_pdf">
-            <img src="/static/images/jpg.png">
-            JPG → PDF
-        </div>
-
-        <div class="option" data-value="pdf_to_jpg">
-            <img src="/static/images/pdf.png">
-            PDF → JPG
-        </div>
-
-        <div class="option" data-value="pdf_to_ppt">
-            <img src="/static/images/pdf.png">
-            PDF → PPT
-        </div>
-
-        <div class="option" data-value="ppt_to_pdf">
-            <img src="/static/images/ppt.png">
-            PPT → PDF
-        </div>
-
-        <div class="option" data-value="word_to_pdf">
-            <img src="/static/images/word.png">
-            Word → PDF
-        </div>
-
-    </div>
-
-    <!-- Hidden input for backend -->
-    <input type="hidden" name="conversion" id="conversionInput" required>
-
-</div>
-
-        <!-- Buttons -->
-        <div class="action-buttons">
-            <button type="submit" id="convertBtn">Convert File</button>
-            <button type="button" id="clearAllBtn" class="clear-btn">Clear All</button>
-        </div>
-
-    </form>
-
 
 <!-- =========================================================
-     FILE TRANSFER
+     MAIN FILE CONVERTER
      ========================================================= -->
 
-<section id="transfer" class="how-section">
+<main class="main-content">
 
-    <h2 class="section-title">File Transfer</h2>
+    <div class="container">
 
-    <p class="section-subtitle">
-        Send files to another device using a code
-    </p>
+        <h1 class="title">
+            Universal File Converter
+        </h1>
 
-    <div class="transfer-container">
+        <p class="subtitle">
+            Convert your files instantly
+        </p>
 
-        <!-- ================= SEND FILE ================= -->
 
-        <div class="box">
+        <form
+            id="uploadForm"
+            action="/convert"
+            method="POST"
+            enctype="multipart/form-data"
+        >
 
-            <h3>Send File</h3>
 
-            <div id="uploadBox" class="upload-box transfer-upload-box">
+            <!-- ================= UPLOAD ================= -->
 
-                <p>
-                    Drag & Drop file here or click to select
+            <div
+                class="upload-box"
+                id="dropArea"
+            >
+
+                <p class="upload-text">
+                    Drag & Drop Files Here
                 </p>
+
+                <p class="upload-sub">
+                    or click to upload
+                </p>
+
 
                 <input
                     type="file"
-                    id="transferFileInput"
-                    style="display:none;"
+                    name="file"
+                    id="fileInput"
                     multiple
-                    accept=".jpg,.jpeg,.png,.pdf,.ppt,.pptx,.doc,.docx,.mp4,.mov,.avi,.mkv,.webm"
+                    accept=".jpg,.jpeg,.png,.pdf,.ppt,.pptx,.doc,.docx"
+                    hidden
                 >
 
             </div>
 
-            <div id="transferPreview"></div>
 
-            <button
-                type="button"
-                onclick="sendFile()"
-            >
-                Send
-            </button>
+            <!-- ================= PREVIEW ================= -->
 
-            <p id="codeDisplay"></p>
-
-        </div>
+            <div
+                id="filePreview"
+                class="file-preview-list"
+            ></div>
 
 
-        <!-- ================= RECEIVE FILE ================= -->
 
-        <div class="box">
+            <!-- ================= CONVERSION ================= -->
 
-            <h3>Receive File</h3>
-
-            <input
-                type="text"
-                id="codeInput"
-                placeholder="Enter Code"
-                autocomplete="off"
+            <div
+                class="custom-select"
+                id="customSelect"
             >
 
-            <button
-                type="button"
-                onclick="receiveFile()"
-            >
-                Receive
-            </button>
+                <div class="select-box">
 
-        </div>
+                    <span class="selected">
+                        Select Conversion Type
+                    </span>
+
+                    <span class="arrow">
+                        &#9662;
+                    </span>
+
+                </div>
+
+
+                <div class="options-container">
+
+
+                    <div
+                        class="option"
+                        data-value="jpg_to_pdf"
+                    >
+
+                        <img
+                            src="{{ url_for('static', filename='images/jpg.png') }}"
+                            alt="JPG"
+                        >
+
+                        JPG → PDF
+
+                    </div>
+
+
+                    <div
+                        class="option"
+                        data-value="pdf_to_jpg"
+                    >
+
+                        <img
+                            src="{{ url_for('static', filename='images/pdf.png') }}"
+                            alt="PDF"
+                        >
+
+                        PDF → JPG
+
+                    </div>
+
+
+                    <div
+                        class="option"
+                        data-value="pdf_to_ppt"
+                    >
+
+                        <img
+                            src="{{ url_for('static', filename='images/pdf.png') }}"
+                            alt="PDF"
+                        >
+
+                        PDF → PPT
+
+                    </div>
+
+
+                    <div
+                        class="option"
+                        data-value="ppt_to_pdf"
+                    >
+
+                        <img
+                            src="{{ url_for('static', filename='images/ppt.png') }}"
+                            alt="PPT"
+                        >
+
+                        PPT → PDF
+
+                    </div>
+
+
+                    <div
+                        class="option"
+                        data-value="word_to_pdf"
+                    >
+
+                        <img
+                            src="{{ url_for('static', filename='images/word.png') }}"
+                            alt="Word"
+                        >
+
+                        Word → PDF
+
+                    </div>
+
+                </div>
+
+
+                <!-- Backend value -->
+
+                <input
+                    type="hidden"
+                    name="conversion"
+                    id="conversionInput"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- ================= BUTTONS ================= -->
+
+            <div class="action-buttons">
+
+                <button
+                    type="submit"
+                    id="convertBtn"
+                >
+                    Convert File
+                </button>
+
+
+                <button
+                    type="button"
+                    id="clearAllBtn"
+                    class="clear-btn"
+                >
+                    Clear All
+                </button>
+
+            </div>
+
+        </form>
 
     </div>
 
-</section>
+</main>
 
 
-<!-- =========================================================
-     TEXT & CODE ROOM
-     ========================================================= -->
 
 <section id="text-room" class="how-section">
 
@@ -218,63 +294,115 @@
         </h2>
 
         <p class="section-subtitle">
-            Share text and code instantly using a temporary room
+            Paste anything and generate a code to share it instantly
         </p>
 
     </div>
 
 
-    <!-- ================= CREATE / JOIN ================= -->
+    <!-- =====================================================
+         STEP 1 - PASTE CONTENT
+         ===================================================== -->
 
-    <div
-        id="roomStart"
-        class="room-start"
-    >
+    <div id="pasteSection" class="paste-section">
 
-        <!-- ================= CREATE ROOM ================= -->
-
-        <div class="room-card">
-
-            <div class="room-card-icon">
-                +
-            </div>
+        <div class="paste-card">
 
             <h3>
-                Create a Room
+                Paste Your Text or Code
             </h3>
 
             <p>
-                Create a temporary room and share the
-                room code with another device.
+                Paste anything here — text, code, notes, links, etc.
             </p>
 
-            <button
-                type="button"
-                id="createRoomBtn"
-                class="room-primary-btn"
-            >
-                Create Room
-            </button>
+            <textarea
+                id="pasteContent"
+                placeholder="Paste anything here..."
+                spellcheck="false"
+            ></textarea>
+
+            <div class="paste-footer">
+
+                <span id="pasteCharacterCount">
+                    0 characters
+                </span>
+
+                <button
+                    type="button"
+                    id="generateCodeBtn"
+                    class="room-primary-btn"
+                >
+                    Generate Code
+                </button>
+
+            </div>
 
         </div>
 
+    </div>
 
-        <!-- ================= JOIN ROOM ================= -->
 
-        <div class="room-card">
+    <!-- =====================================================
+         STEP 2 - CODE GENERATED
+         ===================================================== -->
 
-            <div class="room-card-icon">
-                ↗
+    <div
+        id="generatedCodeSection"
+        class="generated-code-section"
+        style="display:none;"
+    >
+
+        <div class="generated-code-card">
+
+            <span class="room-label">
+                YOUR SHARE CODE
+            </span>
+
+            <div class="generated-code">
+
+                <strong id="generatedRoomCode">
+                    ------
+                </strong>
+
+                <button
+                    type="button"
+                    id="copyGeneratedCodeBtn"
+                    class="small-btn"
+                >
+                    Copy
+                </button>
+
             </div>
 
-            <h3>
-                Join a Room
-            </h3>
-
             <p>
-                Enter a room code to access shared
-                text or code.
+                Share this 6-character code with another device.
             </p>
+
+            <span id="generateStatus">
+                Ready
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         JOIN EXISTING CODE
+         ===================================================== -->
+
+    <div class="join-share-card">
+
+        <h3>
+            Open Shared Content
+        </h3>
+
+        <p>
+            Already have a code? Enter it below.
+        </p>
+
+        <div class="join-code-row">
 
             <input
                 type="text"
@@ -290,7 +418,7 @@
                 id="joinRoomBtn"
                 class="room-primary-btn"
             >
-                Join Room
+                Open
             </button>
 
         </div>
@@ -298,15 +426,15 @@
     </div>
 
 
-    <!-- ================= ROOM EDITOR ================= -->
+    <!-- =====================================================
+         SHARED CONTENT
+         ===================================================== -->
 
     <div
-        id="roomEditor"
+        id="sharedContentSection"
         class="room-editor"
         style="display:none;"
     >
-
-        <!-- ================= ROOM HEADER ================= -->
 
         <div class="room-editor-header">
 
@@ -334,7 +462,6 @@
 
             </div>
 
-
             <div class="room-status">
 
                 <span class="status-dot"></span>
@@ -348,30 +475,7 @@
         </div>
 
 
-        <!-- ================= TOOLBAR ================= -->
-
         <div class="room-toolbar">
-
-            <div class="room-type-buttons">
-
-                <button
-                    type="button"
-                    class="type-btn active"
-                    data-type="text"
-                >
-                    Text
-                </button>
-
-                <button
-                    type="button"
-                    class="type-btn"
-                    data-type="code"
-                >
-                    Code
-                </button>
-
-            </div>
-
 
             <button
                 type="button"
@@ -384,16 +488,12 @@
         </div>
 
 
-        <!-- ================= TEXT AREA ================= -->
-
         <textarea
             id="roomContent"
-            placeholder="Paste your text or code here..."
+            placeholder="Shared content..."
             spellcheck="false"
         ></textarea>
 
-
-        <!-- ================= ROOM FOOTER ================= -->
 
         <div class="room-footer">
 
@@ -408,193 +508,113 @@
         </div>
 
 
-        <!-- ================= LEAVE ROOM ================= -->
-
         <button
             type="button"
             id="leaveRoomBtn"
             class="leave-btn"
         >
-            Leave Room
+            Close
         </button>
 
     </div>
 
 </section>
-
-
 <!-- =========================================================
-     PDF TOOLS
+     FILE TRANSFER
      ========================================================= -->
 
-<section id="pdf-tools" class="how-section">
+<section
+    id="transfer"
+    class="how-section"
+>
+
 
     <h2 class="section-title">
-        PDF Tools
+        File Transfer
     </h2>
 
+
     <p class="section-subtitle">
-        Merge, split, lock, and unlock your PDF files
+        Send files to another device using a code
     </p>
 
 
     <div class="transfer-container">
 
-        <!-- ================= MERGE PDF ================= -->
+
+        <!-- ================= SEND FILE ================= -->
 
         <div class="box">
 
             <h3>
-                Merge PDFs
+                Send File
             </h3>
 
-            <form
-                action="/convert/tools/merge-pdf"
-                method="POST"
-                enctype="multipart/form-data"
+
+            <div
+                id="uploadBox"
+                class="upload-box transfer-upload-box"
             >
+
+                <p>
+                    Drag & Drop file here or click to select
+                </p>
+
 
                 <input
                     type="file"
-                    name="files"
-                    accept=".pdf"
+                    id="transferFileInput"
+                    style="display:none;"
                     multiple
-                    required
+                    accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.ppt,.pptx,.doc,.docx,.mp4,.mov,.avi,.mkv,.webm"
                 >
 
-                <button
-                    type="submit"
-                >
-                    Merge PDF
-                </button>
+            </div>
 
-            </form>
+
+            <!-- Transfer preview -->
+
+            <div id="transferPreview"></div>
+
+
+            <button
+                type="button"
+                onclick="sendFile()"
+            >
+                Send
+            </button>
+
+
+            <p id="codeDisplay"></p>
 
         </div>
 
 
-        <!-- ================= SPLIT PDF ================= -->
+
+        <!-- ================= RECEIVE FILE ================= -->
 
         <div class="box">
 
             <h3>
-                Split PDF
+                Receive File
             </h3>
 
-            <form
-                action="/convert/tools/split-pdf"
-                method="POST"
-                enctype="multipart/form-data"
+
+            <input
+                type="text"
+                id="codeInput"
+                placeholder="Enter 6-character Code"
+                maxlength="6"
+                autocomplete="off"
             >
 
-                <input
-                    type="file"
-                    name="file"
-                    accept=".pdf"
-                    required
-                >
 
-                <input
-                    type="number"
-                    name="start_page"
-                    placeholder="Start page (e.g. 1)"
-                    min="1"
-                    required
-                >
-
-                <input
-                    type="number"
-                    name="end_page"
-                    placeholder="End page (e.g. 3)"
-                    min="1"
-                    required
-                >
-
-                <button
-                    type="submit"
-                >
-                    Split PDF
-                </button>
-
-            </form>
-
-        </div>
-
-
-        <!-- ================= LOCK PDF ================= -->
-
-        <div class="box">
-
-            <h3>
-                Lock PDF
-            </h3>
-
-            <form
-                action="/convert/tools/lock-pdf"
-                method="POST"
-                enctype="multipart/form-data"
+            <button
+                type="button"
+                onclick="receiveFile()"
             >
-
-                <input
-                    type="file"
-                    name="file"
-                    accept=".pdf"
-                    required
-                >
-
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Enter password"
-                    required
-                >
-
-                <button
-                    type="submit"
-                >
-                    Lock PDF
-                </button>
-
-            </form>
-
-        </div>
-
-
-        <!-- ================= UNLOCK PDF ================= -->
-
-        <div class="box">
-
-            <h3>
-                Unlock PDF
-            </h3>
-
-            <form
-                action="/convert/tools/unlock-pdf"
-                method="POST"
-                enctype="multipart/form-data"
-            >
-
-                <input
-                    type="file"
-                    name="file"
-                    accept=".pdf"
-                    required
-                >
-
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Enter password"
-                    required
-                >
-
-                <button
-                    type="submit"
-                >
-                    Unlock PDF
-                </button>
-
-            </form>
+                Receive
+            </button>
 
         </div>
 
@@ -602,417 +622,22 @@
 
 </section>
 
-
-<!-- =========================================================
-     DOCUMENT UTILITIES
-     ========================================================= -->
-
-<section id="document-tools" class="how-section">
-
-    <h2 class="section-title">
-        Document Utilities
-    </h2>
-
-    <p class="section-subtitle">
-        Add page numbers, rotate pages, and reorder PDF
-    </p>
-
-
-    <div class="transfer-container">
-
-        <!-- ================= ADD PAGE NUMBERS ================= -->
-
-        <div class="box">
-
-            <h3>
-                Add Page Numbers
-            </h3>
-
-            <form
-                action="/convert/tools/add-page-numbers"
-                method="POST"
-                enctype="multipart/form-data"
-            >
-
-                <input
-                    type="file"
-                    name="file"
-                    accept=".pdf"
-                    required
-                >
-
-                <button
-                    type="submit"
-                >
-                    Add Numbers
-                </button>
-
-            </form>
-
-        </div>
-
-
-        <!-- ================= ROTATE PDF ================= -->
-
-        <div class="box">
-
-            <h3>
-                Rotate PDF
-            </h3>
-
-            <form
-                action="/convert/tools/rotate-pdf"
-                method="POST"
-                enctype="multipart/form-data"
-            >
-
-                <input
-                    type="file"
-                    name="file"
-                    accept=".pdf"
-                    required
-                >
-
-                <select
-                    name="angle"
-                    required
-                >
-
-                    <option value="90">
-                        90°
-                    </option>
-
-                    <option value="180">
-                        180°
-                    </option>
-
-                    <option value="270">
-                        270°
-                    </option>
-
-                </select>
-
-                <button
-                    type="submit"
-                >
-                    Rotate
-                </button>
-
-            </form>
-
-        </div>
-
-
-        <!-- ================= REORDER PDF ================= -->
-
-        <div class="box">
-
-            <h3>
-                Reorder PDF Pages
-            </h3>
-
-            <form
-                action="/convert/tools/reorder-pdf"
-                method="POST"
-                enctype="multipart/form-data"
-            >
-
-                <input
-                    type="file"
-                    name="file"
-                    accept=".pdf"
-                    required
-                >
-
-                <input
-                    type="text"
-                    name="page_order"
-                    placeholder="Example: 3,1,2,4"
-                    required
-                >
-
-                <button
-                    type="submit"
-                >
-                    Reorder
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================================================
-     IMAGE TOOLS
-     ========================================================= -->
-
-<section id="image-tools" class="how-section">
-
-    <h2 class="section-title">
-        Image Tools
-    </h2>
-
-    <p class="section-subtitle">
-        Resize, compress, crop, watermark, and convert formats
-    </p>
-
-
-    <div class="transfer-container">
-
-        <!-- ================= RESIZE ================= -->
-
-        <div class="box">
-
-            <h3>
-                Resize Image
-            </h3>
-
-            <form
-                action="/convert/tools/image-resize"
-                method="POST"
-                enctype="multipart/form-data"
-            >
-
-                <input
-                    type="file"
-                    name="file"
-                    accept=".jpg,.jpeg,.png,.webp"
-                    required
-                >
-
-                <input
-                    type="number"
-                    name="width"
-                    placeholder="Width (px)"
-                    required
-                >
-
-                <input
-                    type="number"
-                    name="height"
-                    placeholder="Height (px)"
-                    required
-                >
-
-                <button
-                    type="submit"
-                >
-                    Resize
-                </button>
-
-            </form>
-
-        </div>
-
-
-        <!-- ================= COMPRESS ================= -->
-
-        <div class="box">
-
-            <h3>
-                Compress Image
-            </h3>
-
-            <form
-                action="/convert/tools/image-compress"
-                method="POST"
-                enctype="multipart/form-data"
-            >
-
-                <input
-                    type="file"
-                    name="file"
-                    accept=".jpg,.jpeg,.png,.webp"
-                    required
-                >
-
-                <input
-                    type="number"
-                    name="quality"
-                    min="1"
-                    max="95"
-                    placeholder="Quality (1-95)"
-                    required
-                >
-
-                <button
-                    type="submit"
-                >
-                    Compress
-                </button>
-
-            </form>
-
-        </div>
-
-
-        <!-- ================= CROP ================= -->
-
-        <div class="box">
-
-            <h3>
-                Crop Image
-            </h3>
-
-            <form
-                action="/convert/tools/image-crop"
-                method="POST"
-                enctype="multipart/form-data"
-            >
-
-                <input
-                    type="file"
-                    name="file"
-                    accept=".jpg,.jpeg,.png,.webp"
-                    required
-                >
-
-                <input
-                    type="number"
-                    name="x"
-                    placeholder="X"
-                    required
-                >
-
-                <input
-                    type="number"
-                    name="y"
-                    placeholder="Y"
-                    required
-                >
-
-                <input
-                    type="number"
-                    name="w"
-                    placeholder="Width"
-                    required
-                >
-
-                <input
-                    type="number"
-                    name="h"
-                    placeholder="Height"
-                    required
-                >
-
-                <button
-                    type="submit"
-                >
-                    Crop
-                </button>
-
-            </form>
-
-        </div>
-
-
-        <!-- ================= WATERMARK ================= -->
-
-        <div class="box">
-
-            <h3>
-                Watermark Image
-            </h3>
-
-            <form
-                action="/convert/tools/image-watermark"
-                method="POST"
-                enctype="multipart/form-data"
-            >
-
-                <input
-                    type="file"
-                    name="file"
-                    accept=".jpg,.jpeg,.png,.webp"
-                    required
-                >
-
-                <input
-                    type="text"
-                    name="text"
-                    placeholder="Watermark text"
-                    required
-                >
-
-                <button
-                    type="submit"
-                >
-                    Watermark
-                </button>
-
-            </form>
-
-        </div>
-
-
-        <!-- ================= CONVERT FORMAT ================= -->
-
-        <div class="box">
-
-            <h3>
-                Convert Format
-            </h3>
-
-            <form
-                action="/convert/tools/image-convert"
-                method="POST"
-                enctype="multipart/form-data"
-            >
-
-                <input
-                    type="file"
-                    name="file"
-                    accept=".jpg,.jpeg,.png,.webp"
-                    required
-                >
-
-                <select
-                    name="target_format"
-                    required
-                >
-
-                    <option value="JPG">
-                        JPG
-                    </option>
-
-                    <option value="PNG">
-                        PNG
-                    </option>
-
-                    <option value="WEBP">
-                        WEBP
-                    </option>
-
-                </select>
-
-                <button
-                    type="submit"
-                >
-                    Convert
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</section>
 
 
 <!-- =========================================================
      NOTES / STUDY
      ========================================================= -->
 
-<section id="study-tools" class="how-section">
+<section
+    id="study-tools"
+    class="how-section"
+>
+
 
     <h2 class="section-title">
         Notes / Study
     </h2>
+
 
     <p class="section-subtitle">
         Generate summary, key points, and important questions from PDF
@@ -1021,11 +646,13 @@
 
     <div class="transfer-container">
 
+
         <div class="box">
 
             <h3>
                 Analyze PDF
             </h3>
+
 
             <form
                 action="/convert/study/analyze-pdf"
@@ -1033,12 +660,14 @@
                 enctype="multipart/form-data"
             >
 
+
                 <input
                     type="file"
                     name="file"
                     accept=".pdf"
                     required
                 >
+
 
                 <select
                     name="summary_length"
@@ -1049,7 +678,10 @@
                         Short
                     </option>
 
-                    <option value="medium" selected>
+                    <option
+                        value="medium"
+                        selected
+                    >
                         Medium
                     </option>
 
@@ -1059,9 +691,8 @@
 
                 </select>
 
-                <button
-                    type="submit"
-                >
+
+                <button type="submit">
                     Generate Notes
                 </button>
 
@@ -1072,150 +703,410 @@
     </div>
 
 </section>
-<!-- ================= HOW IT WORKS ================= -->
+
+
+
+<!-- =========================================================
+     HOW FILE CONVERSION WORKS
+     ========================================================= -->
+
 <section class="how-section">
 
-    <h2 class="section-title">How It Works</h2>
-    <p class="section-subtitle">Convert your files in 3 simple steps</p>
+    <h2 class="section-title">
+        How It Works
+    </h2>
+
+    <p class="section-subtitle">
+        Convert your files in 3 simple steps
+    </p>
+
 
     <div class="steps-container">
 
-        <!-- Step 1 -->
+
         <div class="step-card">
-            <img src="{{ url_for('static', filename='images/upload.png') }}" alt="Upload">
-            <h3>Upload File</h3>
-            <p>Select or drag & drop your file into the upload box.</p>
+
+            <img
+                src="{{ url_for('static', filename='images/upload.png') }}"
+                alt="Upload"
+            >
+
+            <h3>
+                Upload File
+            </h3>
+
+            <p>
+                Select or drag & drop your file into the upload box.
+            </p>
+
         </div>
 
-        <!-- Step 2 -->
+
+
         <div class="step-card">
-            <img src="{{ url_for('static', filename='images/convert.png') }}" alt="Convert">
-            <h3>Choose Format</h3>
-            <p>Select the conversion type like PDF, JPG, PPT, or Word.</p>
+
+            <img
+                src="{{ url_for('static', filename='images/convert.png') }}"
+                alt="Convert"
+            >
+
+            <h3>
+                Choose Format
+            </h3>
+
+            <p>
+                Select the conversion type like PDF, JPG, PPT, or Word.
+            </p>
+
         </div>
 
-        <!-- Step 3 -->
+
+
         <div class="step-card">
-            <img src="{{ url_for('static', filename='images/download.png') }}" alt="Download">
-            <h3>Download</h3>
-            <p>Click the download button and get your converted file instantly.</p>
+
+            <img
+                src="{{ url_for('static', filename='images/download.png') }}"
+                alt="Download"
+            >
+
+            <h3>
+                Download
+            </h3>
+
+            <p>
+                Click the download button and get your converted file instantly.
+            </p>
+
         </div>
 
     </div>
 
 </section>
-<!-- ================= HOW DOCUMENT UTILITIES WORKS ================= -->
+
+
+
+<!-- =========================================================
+     HOW DOCUMENT UTILITIES WORK
+     ========================================================= -->
+
 <section class="how-section">
-    <h2 class="section-title">How Document Utilities Works</h2>
-    <p class="section-subtitle">Edit PDF structure in 3 simple steps</p>
+
+    <h2 class="section-title">
+        How Document Utilities Works
+    </h2>
+
+    <p class="section-subtitle">
+        Edit PDF structure in 3 simple steps
+    </p>
+
 
     <div class="steps-container">
-        <div class="step-card">
-            <img src="{{ url_for('static', filename='images/upload.png') }}" alt="Upload PDF">
-            <h3>Upload PDF</h3>
-            <p>Select your PDF file from device.</p>
-        </div>
+
 
         <div class="step-card">
-            <img src="{{ url_for('static', filename='images/convert.png') }}" alt="Choose Utility">
-            <h3>Choose Utility</h3>
-            <p>Add page numbers, rotate pages, or reorder pages.</p>
+
+            <img
+                src="{{ url_for('static', filename='images/upload.png') }}"
+                alt="Upload PDF"
+            >
+
+            <h3>
+                Upload PDF
+            </h3>
+
+            <p>
+                Select your PDF file from device.
+            </p>
+
         </div>
 
+
+
         <div class="step-card">
-            <img src="{{ url_for('static', filename='images/download.png') }}" alt="Download Result">
-            <h3>Download Updated PDF</h3>
-            <p>Get your modified PDF instantly.</p>
+
+            <img
+                src="{{ url_for('static', filename='images/convert.png') }}"
+                alt="Choose Utility"
+            >
+
+            <h3>
+                Choose Utility
+            </h3>
+
+            <p>
+                Add page numbers, rotate pages, or reorder pages.
+            </p>
+
         </div>
+
+
+
+        <div class="step-card">
+
+            <img
+                src="{{ url_for('static', filename='images/download.png') }}"
+                alt="Download Result"
+            >
+
+            <h3>
+                Download Updated PDF
+            </h3>
+
+            <p>
+                Get your modified PDF instantly.
+            </p>
+
+        </div>
+
     </div>
+
 </section>
 
-<!-- ================= HOW IMAGE TOOLS WORKS ================= -->
+
+
+<!-- =========================================================
+     HOW IMAGE TOOLS WORK
+     ========================================================= -->
+
 <section class="how-section">
-    <h2 class="section-title">How Image Tools Works</h2>
-    <p class="section-subtitle">Edit and convert images in 3 simple steps</p>
+
+    <h2 class="section-title">
+        How Image Tools Works
+    </h2>
+
+    <p class="section-subtitle">
+        Edit and convert images in 3 simple steps
+    </p>
+
 
     <div class="steps-container">
-        <div class="step-card">
-            <img src="{{ url_for('static', filename='images/upload.png') }}" alt="Upload Image">
-            <h3>Upload Image</h3>
-            <p>Select JPG, PNG, or WEBP image.</p>
-        </div>
+
 
         <div class="step-card">
-            <img src="{{ url_for('static', filename='images/convert.png') }}" alt="Choose Tool">
-            <h3>Choose Tool</h3>
-            <p>Resize, crop, compress, watermark, or convert format.</p>
+
+            <img
+                src="{{ url_for('static', filename='images/upload.png') }}"
+                alt="Upload Image"
+            >
+
+            <h3>
+                Upload Image
+            </h3>
+
+            <p>
+                Select JPG, PNG, or WEBP image.
+            </p>
+
         </div>
 
+
+
         <div class="step-card">
-            <img src="{{ url_for('static', filename='images/download.png') }}" alt="Download Image">
-            <h3>Download Output</h3>
-            <p>Preview and download your edited image.</p>
+
+            <img
+                src="{{ url_for('static', filename='images/convert.png') }}"
+                alt="Choose Tool"
+            >
+
+            <h3>
+                Choose Tool
+            </h3>
+
+            <p>
+                Resize, crop, compress, watermark, or convert format.
+            </p>
+
         </div>
+
+
+
+        <div class="step-card">
+
+            <img
+                src="{{ url_for('static', filename='images/download.png') }}"
+                alt="Download Image"
+            >
+
+            <h3>
+                Download Output
+            </h3>
+
+            <p>
+                Preview and download your edited image.
+            </p>
+
+        </div>
+
     </div>
+
 </section>
 
-<!-- ================= HOW NOTES/STUDY WORKS ================= -->
+
+
+<!-- =========================================================
+     HOW NOTES / STUDY WORK
+     ========================================================= -->
+
 <section class="how-section">
-    <h2 class="section-title">How Notes / Study Works</h2>
-    <p class="section-subtitle">Generate study content from PDF in 3 simple steps</p>
+
+    <h2 class="section-title">
+        How Notes / Study Works
+    </h2>
+
+    <p class="section-subtitle">
+        Generate study content from PDF in 3 simple steps
+    </p>
+
 
     <div class="steps-container">
-        <div class="step-card">
-            <img src="{{ url_for('static', filename='images/upload.png') }}" alt="Upload PDF">
-            <h3>Upload PDF</h3>
-            <p>Select your study material PDF.</p>
-        </div>
+
 
         <div class="step-card">
-            <img src="{{ url_for('static', filename='images/convert.png') }}" alt="Analyze">
-            <h3>Analyze Content</h3>
-            <p>System extracts summary, key points, and questions.</p>
+
+            <img
+                src="{{ url_for('static', filename='images/upload.png') }}"
+                alt="Upload PDF"
+            >
+
+            <h3>
+                Upload PDF
+            </h3>
+
+            <p>
+                Select your study material PDF.
+            </p>
+
         </div>
 
+
+
         <div class="step-card">
-            <img src="{{ url_for('static', filename='images/download.png') }}" alt="Use Notes">
-            <h3>Use Notes</h3>
-            <p>Read generated notes and revise faster.</p>
+
+            <img
+                src="{{ url_for('static', filename='images/convert.png') }}"
+                alt="Analyze"
+            >
+
+            <h3>
+                Analyze Content
+            </h3>
+
+            <p>
+                System extracts summary, key points, and questions.
+            </p>
+
         </div>
+
+
+
+        <div class="step-card">
+
+            <img
+                src="{{ url_for('static', filename='images/download.png') }}"
+                alt="Use Notes"
+            >
+
+            <h3>
+                Use Notes
+            </h3>
+
+            <p>
+                Read generated notes and revise faster.
+            </p>
+
+        </div>
+
     </div>
+
 </section>
+
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
 <footer>
 
- <!-- ================= ABOUT ================= -->
-<section id="about" class="section-box">
-    <h2>About Us</h2>
-    <p>
-        This tool allows you to  convert files easily between formats like PDF, JPG, PPT, and Word
-        with a clean and fast interface.
-    </p>
-</section>
+
+    <!-- ================= ABOUT ================= -->
+
+    <section
+        id="about"
+        class="section-box"
+    >
+
+        <h2>
+            About Us
+        </h2>
+
+        <p>
+            This tool allows you to convert files easily
+            between formats like PDF, JPG, PPT, and Word
+            with a clean and fast interface.
+        </p>
+
+    </section>
 
 
-<!-- ================= CONTACT ================= -->
-<section id="contact" class="section-box">
-    <h2>Contact</h2>
-    <p>
-        Developed by Arif | BCA Project <br>
-        Email: bwubca23425@brainwareuniversity.ac.in
-    </p>
-</section>
+
+    <!-- ================= CONTACT ================= -->
+
+    <section
+        id="contact"
+        class="section-box"
+    >
+
+        <h2>
+            Contact
+        </h2>
+
+        <p>
+
+            Developed by Arif | BCA Project
+
+            <br>
+
+            Email:
+            bwubca23425@brainwareuniversity.ac.in
+
+        </p>
+
+    </section>
+
+
 </footer>
 
 
-<!-- ================= LOADER ================= -->
-<div id="loader" class="loader-box">
+
+<!-- =========================================================
+     LOADER
+     ========================================================= -->
+
+<div
+    id="loader"
+    class="loader-box"
+>
+
     <div class="loader"></div>
-    <p>Converting your file...</p>
+
+    <p>
+        Converting your file...
+    </p>
+
 </div>
 
 
-<!-- ================= JS ================= -->
-<script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
-<script src="{{ url_for('static', filename='js/transfer.js') }}" defer></script>
 
-<script src="{{ url_for('static', filename='js/room.js') }}" defer></script>
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script
+    src="{{ url_for('static', filename='js/script.js') }}"
+    defer
+></script>
+
 
 </body>
 </html>
