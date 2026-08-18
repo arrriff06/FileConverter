@@ -385,18 +385,25 @@ def send_file_transfer():
 
     files = request.files.getlist("files")
 
-    if not files or all(
-        not file or file.filename == ""
-        for file in files
-    ):
-
+    if not files:
         return jsonify({
-            "error": "No files provided"
+            "success": False,
+            "error": "No files provided."
+        }), 400
+
+    # Remove empty uploads
+    files = [
+        file for file in files
+        if file and file.filename
+    ]
+
+    if not files:
+        return jsonify({
+            "success": False,
+            "error": "No files selected."
         }), 400
 
     code = generate_code()
-
-    saved_paths = []
 
     upload_folder = current_app.config["UPLOAD_FOLDER"]
 
@@ -405,38 +412,94 @@ def send_file_transfer():
         exist_ok=True
     )
 
-    for file in files:
+    saved_paths = []
+    rejected_files = []
 
-        if not file or not file.filename:
-            continue
+    for file in files:
 
         original_filename = secure_filename(
             file.filename
         )
 
+        # ---------------------------------------------
+        # Check extension
+        # ---------------------------------------------
+
         if not allowed_transfer_file(
             original_filename
         ):
+
+            rejected_files.append(
+                original_filename
+            )
+
             continue
 
-        filename = (
+        # ---------------------------------------------
+        # Create safe stored filename
+        # ---------------------------------------------
+
+        stored_filename = (
             f"{code}_{original_filename}"
         )
 
         filepath = os.path.join(
             upload_folder,
-            filename
+            stored_filename
         )
 
-        file.save(filepath)
+        # ---------------------------------------------
+        # Save file
+        # ---------------------------------------------
+
+        try:
+
+            file.save(filepath)
+
+        except Exception as e:
+
+            print(
+                "FILE SAVE ERROR:",
+                repr(e)
+            )
+
+            rejected_files.append(
+                original_filename
+            )
+
+            continue
+
+        # ---------------------------------------------
+        # Make sure file actually exists
+        # ---------------------------------------------
+
+        if not os.path.isfile(filepath):
+
+            rejected_files.append(
+                original_filename
+            )
+
+            continue
 
         saved_paths.append(filepath)
+
+    # ---------------------------------------------
+    # No files successfully saved
+    # ---------------------------------------------
 
     if not saved_paths:
 
         return jsonify({
-            "error": "No valid files provided."
+            "success": False,
+            "error": (
+                "No supported files could be uploaded."
+            ),
+            "rejected": rejected_files
         }), 400
+
+    # ---------------------------------------------
+    # Store transfer information
+    # ---------------------------------------------
 
     files_db[code] = {
         "paths": saved_paths,
@@ -444,11 +507,21 @@ def send_file_transfer():
         "count": len(saved_paths)
     }
 
-    return jsonify({
-        "code": code,
-        "count": len(saved_paths)
-    })
+    print(
+        "TRANSFER SUCCESS:",
+        code,
+        [
+            os.path.basename(path)
+            for path in saved_paths
+        ]
+    )
 
+    return jsonify({
+        "success": True,
+        "code": code,
+        "count": len(saved_paths),
+        "rejected": rejected_files
+    })
 
 # =========================================================
 # CHECK TRANSFER CODE
